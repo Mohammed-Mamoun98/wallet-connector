@@ -31,8 +31,6 @@ export const defaultEventListener: IWalletListeners = {
 };
 
 export const getBalance = async (account: string) => {
-  const ethereum = MMSDK.getProvider();
-
   if (!ethereum) return 0;
   const balanceInWei = await ethereum?.request({
     method: "eth_getBalance",
