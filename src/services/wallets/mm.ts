@@ -14,10 +14,11 @@ const MMSDK = new MetaMaskSDK({
   infuraAPIKey: "d3099dcc710c4909bd4882e850fdf962", //TODO: move to ENV keys
   // Other options
 });
-  console.log("UPDATED");
-  
+console.log("UPDATED");
+
 // You can also access via window.ethereum
-const _ethereum = MMSDK.getProvider();
+const _ethereum = window.ethereum;
+console.log({ _ethereum });
 
 if (_ethereum) _ethereum.request({ method: "eth_requestAccounts", params: [] });
 // You can also access via window.ethereum
