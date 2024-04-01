@@ -63,13 +63,7 @@ export const getBalanceInfo = (
 export const connectMetaMask = async (
   listeners = defaultEventListener
 ): Promise<IConnectionInfo | null> => {
-  alert("trying to connect");
-  if (!ethereum) {
-    alert("no eth detecteds");
-    ethereum = await MMSDK.getProvider();
-    alert(JSON.stringify({ ethereum: ethereum?.isConnected() }));
-    // return null;
-  }
+  if (!ethereum) ethereum = await MMSDK.getProvider();
 
   const accounts = await ethereum?.request({
     method: "eth_requestAccounts",
