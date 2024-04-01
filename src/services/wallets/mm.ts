@@ -25,7 +25,7 @@ const MMSDK = new MetaMaskSDK({
 //   : mmEthereumProvider;
 
 // console.log({ ethereum });
-const ethereum = window.ethereum;
+let ethereum = window.ethereum;
 
 // You can also access via window.ethereum
 
@@ -63,10 +63,12 @@ export const getBalanceInfo = (
 export const connectMetaMask = async (
   listeners = defaultEventListener
 ): Promise<IConnectionInfo | null> => {
-  alert("trying to connect")
+  alert("trying to connect");
   if (!ethereum) {
     alert("no eth detecteds");
-    return null;
+    ethereum = await MMSDK.getProvider();
+    alert(JSON.stringify({ ethereum: ethereum?.isConnected() }));
+    // return null;
   }
 
   const accounts = await ethereum?.request({
@@ -88,6 +90,8 @@ export const connectMetaMask = async (
     account,
     balance: getBalanceInfo(balanceValue, chainInfo),
   };
+
+  if (!ethereum) return null;
 
   ethereum.on("accountsChanged", (wallet) => {
     if (!Array.isArray(wallet)) return;
