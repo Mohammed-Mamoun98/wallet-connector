@@ -63,7 +63,13 @@ export const getBalanceInfo = (
 export const connectMetaMask = async (
   listeners = defaultEventListener
 ): Promise<IConnectionInfo | null> => {
-  if (!ethereum) ethereum = await MMSDK.getProvider();
+  if (!ethereum) {
+    window.open(
+      "https://metamask.app.link/dapp/wallet-connector-six.vercel.app/"
+    );
+
+    return null;
+  }
 
   const accounts = await ethereum?.request({
     method: "eth_requestAccounts",
