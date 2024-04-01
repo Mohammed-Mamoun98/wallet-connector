@@ -63,6 +63,7 @@ export const getBalanceInfo = (
 export const connectMetaMask = async (
   listeners = defaultEventListener
 ): Promise<IConnectionInfo | null> => {
+  alert("trying to connect")
   if (!ethereum) {
     alert("no eth detecteds");
     return null;

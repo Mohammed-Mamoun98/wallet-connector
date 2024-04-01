@@ -2,9 +2,13 @@ import React, { useEffect } from "react";
 import { useWalletStore } from "../../../state/stores/walletState";
 import { connectMetaMask, getBalance } from "../../../services/wallets/mm";
 import { IConnectionInfo } from "../../../state/types/wallet";
+import { usePromise } from "../../../hooks/usePromise/usePromise";
 
 export default function MmConnector() {
   const { setAccount, setChain, setBalance } = useWalletStore((state) => state);
+  const [connectMmRequest, connectionInfo, loading, error] = usePromise(
+    connectMetaMask as any
+  );
 
   const handleConnectionSuccess = (res: IConnectionInfo | null) => {
     if (!res) return;
@@ -14,7 +18,7 @@ export default function MmConnector() {
   };
 
   const hanldeConnection = async () => {
-    const connectionInfo = await connectMetaMask({
+    connectMmRequest({
       onConnected: handleConnectionSuccess,
     });
   };
@@ -48,7 +52,14 @@ export default function MmConnector() {
             alt=""
           />
           <span>MetaMask </span>
-          <span>{JSON.stringify({ aa: window.ethereum?.isMetaMask })}</span>
+          <span>
+            {JSON.stringify({
+              aa: window.ethereum?.isMetaMask,
+              connectionInfo,
+              loading,
+              error,
+            })}
+          </span>
         </button>
       </div>
     </div>
