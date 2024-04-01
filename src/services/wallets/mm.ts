@@ -15,17 +15,17 @@ const MMSDK = new MetaMaskSDK({
   infuraAPIKey: "d3099dcc710c4909bd4882e850fdf962", //TODO: move to ENV keys
   // Other options
 });
-console.log("UPDATED");
 
 // You can also access via window.ethereum
-const mmEthereumProvider = MMSDK.getProvider();
-let ethereum = window.ethereum ? window.ethereum : mmEthereumProvider;
-if (isMobile()) {
-  alert("it's mobile switching to mm sdk provider");
-  ethereum = mmEthereumProvider;
-}
+// const mmEthereumProvider = MMSDK.getProvider();
+// const ethereum = isMobile()
+//   ? mmEthereumProvider
+//   : window.ethereum
+//   ? window.ethereum
+//   : mmEthereumProvider;
 
-console.log({ ethereum });
+// console.log({ ethereum });
+const ethereum = window.ethereum;
 
 // You can also access via window.ethereum
 
@@ -63,7 +63,10 @@ export const getBalanceInfo = (
 export const connectMetaMask = async (
   listeners = defaultEventListener
 ): Promise<IConnectionInfo | null> => {
-  if (!ethereum) return null;
+  if (!ethereum) {
+    alert("no eth detecteds");
+    return null;
+  }
 
   const accounts = await ethereum?.request({
     method: "eth_requestAccounts",
