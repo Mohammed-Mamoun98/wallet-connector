@@ -4,12 +4,14 @@ import { IBalance, IChian, IConnectionInfo } from "../../state/types/wallet";
 import { fromWeiToEth } from "../../utils/web3";
 import { newDisplayFloats } from "../../utils/format";
 import { INetwork, ethereumNetworks } from "../../constants/networks";
+import detectEthereumProvider from "@metamask/detect-provider";
 
 const MMSDK = new MetaMaskSDK({
   dappMetadata: {
     name: "JavaScript example dapp",
     url: window.location.href,
   },
+  infuraAPIKey: "d3099dcc710c4909bd4882e850fdf962", //TODO: move to ENV keys
   // Other options
 });
 
@@ -22,7 +24,8 @@ export const defaultEventListener: IWalletListeners = {
 };
 
 export const getBalance = async (account: string) => {
-  const ethereum = window.ethereum || MMSDK.getProvider();
+  const ethereum = MMSDK.getProvider();
+
   if (!ethereum) return 0;
   const balanceInWei = await ethereum?.request({
     method: "eth_getBalance",
@@ -51,6 +54,9 @@ export const connectMetaMask = async (
   listeners = defaultEventListener
 ): Promise<IConnectionInfo | null> => {
   const ethereum = MMSDK.getProvider();
+  const provider = await detectEthereumProvider();
+  console.log({ foundProvider: provider });
+
   if (!ethereum) return null;
 
   const accounts = await ethereum?.request({
