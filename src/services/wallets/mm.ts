@@ -17,10 +17,11 @@ const MMSDK = new MetaMaskSDK({
 console.log("UPDATED");
 
 // You can also access via window.ethereum
-const _ethereum = window.ethereum;
-console.log({ _ethereum });
+const mmEthereumProvider = MMSDK.getProvider();
+const ethereum = window.ethereum ? window.ethereum : mmEthereumProvider;
 
-if (_ethereum) _ethereum.request({ method: "eth_requestAccounts", params: [] });
+console.log({ ethereum });
+
 // You can also access via window.ethereum
 
 export const defaultEventListener: IWalletListeners = {
@@ -59,10 +60,6 @@ export const getBalanceInfo = (
 export const connectMetaMask = async (
   listeners = defaultEventListener
 ): Promise<IConnectionInfo | null> => {
-  const ethereum = MMSDK.getProvider();
-  const provider = await detectEthereumProvider();
-  console.log({ foundProvider: provider });
-
   if (!ethereum) return null;
 
   const accounts = await ethereum?.request({
