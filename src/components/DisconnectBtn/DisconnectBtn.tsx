@@ -8,7 +8,6 @@ export default function DisconnectBtn() {
   }));
 
   const hasAccount = !!+account;
-  console.log({account});
   
   if (!hasAccount) return <></>;
   return (

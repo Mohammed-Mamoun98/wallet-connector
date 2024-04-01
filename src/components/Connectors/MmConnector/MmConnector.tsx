@@ -55,7 +55,6 @@ export default function MmConnector() {
     const connectionInfo = await connectMetaMask({
       onConnected: handleConnectionSuccess,
     });
-    console.log({ connectionInfo });
 
     // .then(handleConnectionSuccess);
   };
