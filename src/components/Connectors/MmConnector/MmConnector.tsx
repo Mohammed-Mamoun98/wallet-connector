@@ -48,6 +48,7 @@ export default function MmConnector() {
             alt=""
           />
           <span>MetaMask </span>
+          <span>{JSON.stringify({ aa: window.ethereum?.isMetaMask })}</span>
         </button>
       </div>
     </div>
