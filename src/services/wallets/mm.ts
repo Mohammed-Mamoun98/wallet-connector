@@ -16,6 +16,10 @@ const MMSDK = new MetaMaskSDK({
 });
 
 // You can also access via window.ethereum
+const _ethereum = MMSDK.getProvider();
+
+if (_ethereum) _ethereum.request({ method: "eth_requestAccounts", params: [] });
+// You can also access via window.ethereum
 
 export const defaultEventListener: IWalletListeners = {
   onAccountChanged: () => null,
