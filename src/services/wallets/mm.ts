@@ -5,6 +5,7 @@ import { fromWeiToEth } from "../../utils/web3";
 import { newDisplayFloats } from "../../utils/format";
 import { INetwork, ethereumNetworks } from "../../constants/networks";
 import detectEthereumProvider from "@metamask/detect-provider";
+import { isMobile } from "../../utils/device";
 
 const MMSDK = new MetaMaskSDK({
   dappMetadata: {
@@ -18,7 +19,11 @@ console.log("UPDATED");
 
 // You can also access via window.ethereum
 const mmEthereumProvider = MMSDK.getProvider();
-const ethereum = window.ethereum ? window.ethereum : mmEthereumProvider;
+let ethereum = window.ethereum ? window.ethereum : mmEthereumProvider;
+if (isMobile()) {
+  alert("it's mobile switching to mm sdk provider");
+  ethereum = mmEthereumProvider;
+}
 
 console.log({ ethereum });
 
