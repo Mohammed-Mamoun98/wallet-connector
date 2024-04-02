@@ -1,1 +1,1 @@
-export const walletConnectProjectId = "653e5815deea0be9dc591bdc907af516";
+export const walletConnectProjectId = process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID;
