@@ -29,7 +29,7 @@ interface IHookState<Response = any> {
 }
 
 export const usePromise = <ResponseType = any, TParams extends any[] = any>(
-  promiseFunction = (..._params: any[]) => null,
+  promiseFunction: (..._params: any[]) => Promise<ResponseType>,
   baseConfig: IBaseConfig = {}
 ): [
   (...params: TParams) => Promise<ResponseType>,
