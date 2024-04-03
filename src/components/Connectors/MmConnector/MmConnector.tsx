@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useWalletStore } from "../../../state/stores/walletState";
 import { IConnectionInfo } from "../../../state/types/wallet";
-
-import { metamaskConnector } from "../../../constants/connectors";
+import { metamaskConnector } from "../../../constants/connectors/metamask";
 
 export default function MmConnector() {
   const { setAccount, setChain, setBalance } = useWalletStore((state) => state);

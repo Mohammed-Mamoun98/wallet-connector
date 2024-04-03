@@ -3,6 +3,9 @@ import { createWeb3Modal, defaultConfig } from "@web3modal/ethers";
 import { walletConnectProjectId } from "../../../constants/apiKeys";
 import { ethersConfig, mainnet } from "../../../constants/walletConnect";
 import { etheruemMethods } from "../../../services/wallets/etheruemMethods";
+import { walletConnectConnector } from "../../../constants/connectors/walletConnect";
+import { useWalletStore } from "../../../state/stores/walletState";
+import { IConnectionInfo } from "../../../state/types/wallet";
 
 // 5. Create a Web3Modal instance
 const modal = createWeb3Modal({
@@ -12,22 +15,39 @@ const modal = createWeb3Modal({
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
   enableOnramp: true, // Optional - false as default
 });
-// 653e5815deea0be9dc591bdc907af516
 
 export default function WalletConnectConnector() {
+  const { setAccount, setChain, setBalance } = useWalletStore((state) => state);
+
+  const handleConnectionSuccess = (res: IConnectionInfo | null) => {
+    if (!res) return;
+    setChain(res.chain);
+    setAccount(res.account);
+    setBalance(res.balance);
+  };
+
+  const handleConnection = () => {
+    walletConnectConnector.connect((connectionInfo) => {
+      handleConnectionSuccess(connectionInfo);
+      walletConnectConnector.addListeners({
+        onAccountChanged: (newAccount) => {
+          setAccount(newAccount as string);
+        },
+        onBalanceChanged: (newBalance) => {
+          setBalance(newBalance);
+        },
+        onChainChanged: (newChain) => {
+          setChain(newChain);
+        },
+      });
+    });
+  };
+
   return (
     <div>
       <div className="">
         <button
-          onClick={() =>
-            modal.open().then(async (res) => {
-              const state = modal.getState();
-              const provider = modal.getWalletProvider();
-              const account = await provider?.request(
-                etheruemMethods.REQUEST_ACCOUNTS
-              );
-            })
-          }
+          onClick={handleConnection}
           className="flex items-center gap-3 white-space-pre"
         >
           <img

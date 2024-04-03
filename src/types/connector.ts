@@ -1,13 +1,14 @@
 import { INetwork } from "../constants/networks";
 import { IWalletListeners } from "../state/types/listeners";
 import { IBalance, IConnectionInfo } from "../state/types/wallet";
+import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
-export interface IConnector {
+export interface IConnector<Type = any> {
   name: string;
   connect: (onConnected: (connectionInfo: IConnectionInfo) => any) => any;
   getChain?: () => Promise<INetwork>;
   getAccount?: () => Promise<string>;
-  getProvider: () => void;
+  getProvider: () => Type;
   addListeners: (listerner: IWalletListeners) => void;
   disconnect?: () => void;
   getBalance?: (account: string, chainId: number) => Promise<IBalance>;

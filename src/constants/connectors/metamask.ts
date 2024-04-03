@@ -1,5 +1,3 @@
-import { getChainInfo } from "../services/wallets/mm";
-import { IConnector } from "../types/connector";
 import {
   createPublicClient,
   createWalletClient,
@@ -7,7 +5,11 @@ import {
   formatEther,
 } from "viem";
 import { mainnet } from "viem/chains";
-import { IBalance, IConnectionInfo } from "../state/types/wallet";
+import { IConnector } from "../../types/connector";
+import { getChainInfo } from "../../services/wallets/mm";
+import { IBalance, IConnectionInfo } from "../../state/types/wallet";
+import EthereumProvider from "@walletconnect/ethereum-provider/dist/types/EthereumProvider";
+import { SDKProvider } from "@metamask/sdk";
 
 const ethereum = window.ethereum;
 
@@ -21,12 +23,17 @@ const publicClient = createPublicClient({
   transport: custom(ethereum!),
 });
 
-export const metamaskConnector: IConnector = {
+export const metamaskConnector: IConnector<SDKProvider> = {
   name: "metamask",
-  autoConnect: true,
-  connect: (onConnected) => {
+  autoConnect: false,
+  connect: function (onConnected) {
+    const provider = this.getProvider();
+
+    // @ts-ignore
+    window.provider = provider;
+
     // handle mobile browsers or devices that don't have metamask installed
-    if (!ethereum) {
+    if (!provider) {
       window.open(
         `https://metamask.app.link/dapp/${process.env.REACT_APP_WALLET_APP_LINK}`
       );
@@ -76,17 +83,7 @@ export const metamaskConnector: IConnector = {
     return balance;
   },
 
-  getProvider: () => {
-    if (!ethereum) {
-      window.open(
-        "https://metamask.app.link/dapp/wallet-connector-six.vercel.app/"
-      );
-
-      return null;
-    }
-    return ethereum;
-  },
-
+  getProvider: () => window.ethereum as SDKProvider,
   getChain: async () => {
     const chainId = await client.getChainId();
     const chainInfo = getChainInfo(chainId);
@@ -103,8 +100,6 @@ export const metamaskConnector: IConnector = {
     if (!ethereum) return;
     ethereum.on("accountsChanged", async (wallets) => {
       if (!Array.isArray(wallets)) return;
-      debugger;
-
       const account = wallets[0];
       listeners?.onAccountChanged?.(wallets[0]);
 
