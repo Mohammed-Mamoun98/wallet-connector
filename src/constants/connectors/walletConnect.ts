@@ -46,9 +46,11 @@ export const walletConnectConnector: IConnector<Promise<EthereumProvider>> = {
       chain: viemMainnet,
       transport: custom(provider),
     });
-    const [account] = await client.getAddresses();
 
-    if (!account) await provider?.connect();
+    // skip showing modal in case wallet was previously connected
+    if (!provider.accounts?.length) await provider?.connect();
+
+    const [account] = await client.getAddresses();
 
     // store provider in window for usage
     // @ts-ignore
