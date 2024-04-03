@@ -1,28 +1,8 @@
 import React from "react";
 import { createWeb3Modal, defaultConfig } from "@web3modal/ethers";
 import { walletConnectProjectId } from "../../../constants/apiKeys";
-
-const mainnet = {
-  chainId: 1,
-  name: "Ethereum",
-  currency: "ETH",
-  explorerUrl: "https://etherscan.io",
-  rpcUrl: "https://cloudflare-eth.com",
-};
-
-const metadata = {
-  name: "My Website",
-  description: "My Website description",
-  url: "https://mywebsite.com", // url must match your domain & subdomain
-  icons: ["https://avatars.mywebsite.com/"],
-};
-
-const ethersConfig = defaultConfig({
-  metadata,
-  enableEIP6963: true, // true by default
-  enableInjected: true, // true by default
-  enableCoinbase: true, // true by default
-});
+import { ethersConfig, mainnet } from "../../../constants/walletConnect";
+import { etheruemMethods } from "../../../services/wallets/etheruemMethods";
 
 // 5. Create a Web3Modal instance
 const modal = createWeb3Modal({
@@ -40,12 +20,15 @@ export default function WalletConnectConnector() {
       <div className="">
         <button
           onClick={() =>
-            modal.open().then((res) => {
+            modal.open().then(async (res) => {
               const state = modal.getState();
               const provider = modal.getWalletProvider();
+              const account = await provider?.request(
+                etheruemMethods.REQUEST_ACCOUNTS
+              );
             })
           }
-          className="d-flex flex-center gap-3 white-space-pre"
+          className="flex items-center gap-3 white-space-pre"
         >
           <img
             width={50}
