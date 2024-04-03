@@ -4,30 +4,9 @@ import { IBalance, IChian, IConnectionInfo } from "../../state/types/wallet";
 import { fromWeiToEth } from "../../utils/web3";
 import { newDisplayFloats } from "../../utils/format";
 import { INetwork, ethereumNetworks } from "../../constants/networks";
-import detectEthereumProvider from "@metamask/detect-provider";
-import { isMobile } from "../../utils/device";
+import { etheruemMethods } from "./etheruemMethods";
 
-const MMSDK = new MetaMaskSDK({
-  dappMetadata: {
-    name: "JavaScript example dapp",
-    url: window.location.href,
-  },
-  infuraAPIKey: "d3099dcc710c4909bd4882e850fdf962", //TODO: move to ENV keys
-  // Other options
-});
-
-// You can also access via window.ethereum
-// const mmEthereumProvider = MMSDK.getProvider();
-// const ethereum = isMobile()
-//   ? mmEthereumProvider
-//   : window.ethereum
-//   ? window.ethereum
-//   : mmEthereumProvider;
-
-// console.log({ ethereum });
-let ethereum = window.ethereum;
-
-// You can also access via window.ethereum
+const ethereum = window.ethereum;
 
 export const defaultEventListener: IWalletListeners = {
   onAccountChanged: () => null,
@@ -71,9 +50,7 @@ export const connectMetaMask = async (
     return null;
   }
 
-  const accounts = await ethereum?.request({
-    method: "eth_requestAccounts",
-  });
+  const accounts = await ethereum?.request(etheruemMethods.REQUEST_ACCOUNTS);
 
   if (!Array.isArray(accounts)) return null;
 
@@ -81,7 +58,8 @@ export const connectMetaMask = async (
 
   const balanceValue = await getBalance(account);
 
-  const chainId = (await ethereum?.request({ method: "eth_chainId" })) || 0;
+  const chainId =
+    (await ethereum?.request(etheruemMethods.REQUEST_CHAIN_ID)) || 0;
 
   const chainInfo: INetwork = getChainInfo(chainId as number);
 

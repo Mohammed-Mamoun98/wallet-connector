@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
 import { useWalletStore } from "../../../state/stores/walletState";
-import { connectMetaMask, getBalance } from "../../../services/wallets/mm";
 import { IConnectionInfo } from "../../../state/types/wallet";
-import { usePromise } from "../../../hooks/usePromise/usePromise";
+
+import { metamaskConnector } from "../../../constants/connectors";
 
 export default function MmConnector() {
   const { setAccount, setChain, setBalance } = useWalletStore((state) => state);
-  const [connectMmRequest, connectionInfo, loading, error] = usePromise(
-    connectMetaMask as any
-  );
 
   const handleConnectionSuccess = (res: IConnectionInfo | null) => {
     if (!res) return;
@@ -18,32 +15,31 @@ export default function MmConnector() {
   };
 
   const hanldeConnection = async () => {
-    connectMmRequest({
-      onConnected: handleConnectionSuccess,
+    metamaskConnector.connect((connectionInfo) => {
+      handleConnectionSuccess(connectionInfo);
+      metamaskConnector.addListeners({
+        onAccountChanged: (newAccount) => {
+          setAccount(newAccount as string);
+        },
+        onBalanceChanged: (newBalance) => {
+          setBalance(newBalance);
+        },
+        onChainChanged: (newChain) => {
+          setChain(newChain);
+        },
+      });
     });
   };
 
-  // const connect = async () => {
-  //   try {
-  //     sdk?.connect().then(handleConnectionSuccess);
-  //   } catch (err) {
-  //     console.warn(`failed to connect..`, err);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   handleConnectionSuccess();
-  // }, [chainId, balance, account]);
-
-  // useEffect(() => {
-  //   if (!account) return;
-  // }, [account]);
+  useEffect(() => {
+    if (metamaskConnector.autoConnect) hanldeConnection();
+  }, []);
 
   return (
     <div>
       <div className="">
         <button
-          className="d-flex flex-center gap-3 white-space-pre"
+          className="flex items-center gap-3 white-space-pre"
           onClick={hanldeConnection}
         >
           <img
@@ -52,14 +48,6 @@ export default function MmConnector() {
             alt=""
           />
           <span>MetaMask </span>
-          <span>
-            {JSON.stringify({
-              aa: window.ethereum?.isMetaMask,
-              connectionInfo,
-              loading,
-              error,
-            })}
-          </span>
         </button>
       </div>
     </div>

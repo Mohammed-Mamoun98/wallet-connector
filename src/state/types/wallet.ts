@@ -1,7 +1,7 @@
 import { INetwork } from "../../constants/networks";
 
 export interface IBalance {
-  value: number;
+  value: number | string;
   symbol: string;
   decimals: number;
 }
