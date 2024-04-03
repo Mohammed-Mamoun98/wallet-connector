@@ -11,7 +11,7 @@ export default function DisconnectBtn() {
   
   if (!hasAccount) return <></>;
   return (
-    <div className="d-flex flex-center">
+    <div className="flex items-center bg-slate-500 p-4 rounded-md mt-3 hover:bg-slate-300">
       <button onClick={resetInfo}>Discconnect</button>
     </div>
   );
