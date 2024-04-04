@@ -24,11 +24,6 @@ export const metamaskConnector: IConnector<SDKProvider> = {
   connect: function (onConnected) {
     const provider = this.getProvider();
 
-    const client = createWalletClient({
-      chain: mainnet,
-      transport: custom(ethereum!),
-    });
-
     // @ts-ignore
     window.provider = provider;
 
@@ -40,6 +35,11 @@ export const metamaskConnector: IConnector<SDKProvider> = {
       console.warn("please install metamask");
       return null;
     }
+
+    const client = createWalletClient({
+      chain: mainnet,
+      transport: custom(ethereum!),
+    });
 
     client.requestAddresses().then(async (addresses) => {
       const account = addresses?.[0];
