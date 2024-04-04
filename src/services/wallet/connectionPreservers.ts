@@ -1,8 +1,8 @@
 import { retrieveFromLs, storeInLs } from "../../utils/localstorage";
 
-export const CONNECTION_TYPE = "CONNECTION_TYPE";
+export const WALLET_CONNECTION_TYPE = "WALLET_CONNECTION_TYPE";
 
 export const storeConnectionType = (connectorName: string) =>
-  storeInLs(CONNECTION_TYPE, connectorName);
+  storeInLs(WALLET_CONNECTION_TYPE, connectorName);
 
-export const getStoredConnectionType = () => retrieveFromLs(CONNECTION_TYPE);
+export const getStoredConnectionType = () => retrieveFromLs(WALLET_CONNECTION_TYPE);
