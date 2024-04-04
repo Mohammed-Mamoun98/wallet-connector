@@ -1,5 +1,6 @@
 import React from "react";
 import { useWalletStore } from "../../state/stores/walletState";
+import ConnectBtn from "../../components/ConnectBtn/ConnectBtn";
 
 export default function Header() {
   const { account, balance, chain } = useWalletStore((state) => ({
@@ -9,16 +10,8 @@ export default function Header() {
   }));
 
   return (
-    <div className="">
-      <div className="">
-        <h5>Account: {account}</h5>
-        <h5 className="">Chain: {chain?.chainName}</h5>
-      </div>
-      <div className="">
-        <h5>
-          Balance: {balance.value} {chain?.nativeCurrency.symbol}
-        </h5>
-      </div>
+    <div className="py-4 flex px-2 bg-slate-500">
+      <ConnectBtn />
     </div>
   );
 }
