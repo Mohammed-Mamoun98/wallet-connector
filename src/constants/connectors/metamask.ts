@@ -3,6 +3,7 @@ import {
   createWalletClient,
   custom,
   formatEther,
+  http,
 } from "viem";
 import { mainnet } from "viem/chains";
 import { IConnector } from "../../types/connector";
@@ -13,20 +14,20 @@ import { SDKProvider } from "@metamask/sdk";
 
 const ethereum = window.ethereum;
 
-const client = createWalletClient({
-  chain: mainnet,
-  transport: custom(ethereum!),
-});
-
 const publicClient = createPublicClient({
   chain: mainnet,
-  transport: custom(ethereum!),
+  transport: http(),
 });
 
 export const metamaskConnector: IConnector<SDKProvider> = {
   name: "metamask",
   connect: function (onConnected) {
     const provider = this.getProvider();
+
+    const client = createWalletClient({
+      chain: mainnet,
+      transport: custom(ethereum!),
+    });
 
     // @ts-ignore
     window.provider = provider;
@@ -84,12 +85,20 @@ export const metamaskConnector: IConnector<SDKProvider> = {
 
   getProvider: () => window.ethereum as SDKProvider,
   getChain: async () => {
+    const client = createWalletClient({
+      chain: mainnet,
+      transport: custom(ethereum!),
+    });
     const chainId = await client.getChainId();
     const chainInfo = getChainInfo(chainId);
     return chainInfo;
   },
 
   getAccount: async () => {
+    const client = createWalletClient({
+      chain: mainnet,
+      transport: custom(ethereum!),
+    });
     const wallets = await client.getAddresses();
     if (!Array.isArray(wallets)) return "";
     return wallets[0];
