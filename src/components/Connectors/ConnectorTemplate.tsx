@@ -1,37 +1,15 @@
-import React, { useEffect } from "react";
-import { IConnector } from "../../types/connector";
+import React from "react";
 import { IUiConnector } from "../../constants/connectors/list";
-import { useWalletStore } from "../../state/stores/walletState";
-import { IConnectionInfo } from "../../state/types/wallet";
-import { storeConnectionType } from "../../services/wallet/connectionPreservers";
+import useWalletConnection from "../../hooks/useWalletConnection/useWalletConnection";
 
-export default function ConnectorTemplate({ img, ...connector }: IUiConnector) {
-  const { setAccount, setChain, setBalance } = useWalletStore((state) => state);
-
-  const handleConnectionSuccess = (res: IConnectionInfo | null) => {
-    if (!res) return;
-    setChain(res.chain);
-    setAccount(res.account);
-    setBalance(res.balance);
-  };
+export default function ConnectorTemplate({ img, connector }: IUiConnector) {
+  const [walletConnection] = useWalletConnection({
+    connector,
+  });
+  if (connector.name === "metamask") console.log({ ...walletConnection });
 
   const hanldeConnection = async () => {
-    connector.connect((connectionInfo) => {
-      storeConnectionType(connector.name);
-
-      handleConnectionSuccess(connectionInfo);
-      connector.addListeners({
-        onAccountChanged: (newAccount) => {
-          setAccount(newAccount as string);
-        },
-        onBalanceChanged: (newBalance) => {
-          setBalance(newBalance);
-        },
-        onChainChanged: (newChain) => {
-          setChain(newChain);
-        },
-      });
-    });
+    walletConnection.hanldeConnection();
   };
 
   return (

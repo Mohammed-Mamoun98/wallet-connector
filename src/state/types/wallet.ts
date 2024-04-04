@@ -21,13 +21,13 @@ export interface WalletState {
   setBalance: (newBalanceInfo: IBalance) => void;
   // Chain
   chain: INetwork | null;
-  setChain: (newChain: INetwork) => void;
+  setChain: (newChain: INetwork | null) => void;
   // Clear state
   resetInfo: () => void;
 }
 
 export interface IConnectionInfo {
   account: string;
-  chain: INetwork;
+  chain: INetwork | null;
   balance: IBalance;
 }

@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { WalletState } from "../types/wallet";
 
 export const useWalletStore = create<WalletState>((set) => ({
-  account: "0x",
+  account: "",
   setAccount: (newAccount) => set({ account: newAccount }),
   balance: {
     value: 0,

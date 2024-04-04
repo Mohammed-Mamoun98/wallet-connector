@@ -83,6 +83,10 @@ export const walletConnectConnector: IConnector<Promise<EthereumProvider>> = {
     };
     onConnected(connectionInfo);
   },
+  disconnect: async function () {
+    const provider = await this.getProvider();
+    return provider.disconnect();
+  },
   autoConnect: false,
   getAccount: async () => "",
   getBalance: async () => {
@@ -107,6 +111,7 @@ export const walletConnectConnector: IConnector<Promise<EthereumProvider>> = {
       if (!Array.isArray(wallets)) return;
       const account = wallets[0];
       listeners?.onAccountChanged?.(wallets[0]);
+      console.log("new account" + wallets[0]);
 
       const chain = await this?.getChain?.();
       const newBalance = await this?.getBalance?.(
@@ -118,6 +123,8 @@ export const walletConnectConnector: IConnector<Promise<EthereumProvider>> = {
 
     provider.on("chainChanged", async (chain) => {
       const chainInfo = getChainInfo(+chain);
+      console.log("new chain" + chain);
+
       listeners?.onChainChanged?.(chainInfo);
       const account = (await this.getAccount?.()) || "";
 
