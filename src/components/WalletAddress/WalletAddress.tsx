@@ -1,6 +1,5 @@
 import React from "react";
 import { formatAddress } from "../../utils/string";
-import Blockies from "react-blockies";
 import BlockiesSvg from "blockies-react-svg";
 
 interface IWalletAddress {
