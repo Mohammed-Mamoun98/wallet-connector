@@ -87,7 +87,6 @@ export const walletConnectConnector: IConnector<Promise<EthereumProvider>> = {
     const provider = await this.getProvider();
     return provider.disconnect();
   },
-  autoConnect: false,
   getAccount: async () => "",
   getBalance: async () => {
     return { decimals: 18, symbol: "", value: 1 };

@@ -25,7 +25,6 @@ const publicClient = createPublicClient({
 
 export const metamaskConnector: IConnector<SDKProvider> = {
   name: "metamask",
-  autoConnect: false,
   connect: function (onConnected) {
     const provider = this.getProvider();
 
