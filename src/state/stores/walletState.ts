@@ -12,10 +12,11 @@ export const useWalletStore = create<WalletState>((set) => ({
   setBalance: (newBalance) => set({ balance: newBalance }),
   chain: null,
   setChain: (newChain) => set({ chain: newChain }),
-  resetInfo: () =>
+  resetInfo: function () {
     set({
       account: "",
       chain: null,
-      balance: { value: 0, symbol: "", decimals: 18 },
-    }),
+      balance: { value: 0, symbol: this.chain?.chainName || "", decimals: 18 },
+    });
+  },
 }));
