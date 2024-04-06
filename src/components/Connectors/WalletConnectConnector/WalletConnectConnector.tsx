@@ -7,15 +7,6 @@ import { walletConnectConnector } from "../../../constants/connectors/walletConn
 import { useWalletStore } from "../../../state/stores/walletState";
 import { IConnectionInfo } from "../../../state/types/wallet";
 
-// 5. Create a Web3Modal instance
-const modal = createWeb3Modal({
-  ethersConfig,
-  chains: [mainnet],
-  projectId: walletConnectProjectId as string,
-  enableAnalytics: true, // Optional - defaults to your Cloud configuration
-  enableOnramp: true, // Optional - false as default
-});
-
 export default function WalletConnectConnector() {
   const { setAccount, setChain, setBalance } = useWalletStore((state) => state);
 

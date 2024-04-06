@@ -2,7 +2,10 @@ import React, { useCallback, useMemo } from "react";
 import { useWalletStore } from "../../state/stores/walletState";
 import { IConnectionInfo } from "../../state/types/wallet";
 import { IConnector } from "../../types/connector";
-import { WALLET_CONNECTION_TYPE, storeConnectionType } from "../../services/wallet/connectionPreservers";
+import {
+  WALLET_CONNECTION_TYPE,
+  storeConnectionType,
+} from "../../services/wallet/connectionPreservers";
 import { usePromise } from "../usePromise/usePromise";
 import { IRequestState } from "../../state/types/requestState";
 import { retrieveFromLs } from "../../utils/localstorage";
@@ -17,15 +20,12 @@ interface IUseWAlletConnectionParams {
   connector?: IConnector | null;
 }
 
-
 const storedConnectioType = retrieveFromLs(WALLET_CONNECTION_TYPE);
 const uiConnector = connectorsList.find(
   (con) => con.connector.name === storedConnectioType
 );
-  console.log({uiConnector, storedConnectioType, connectorsList});
-  
-const defaultConnector = uiConnector ? uiConnector.connector : null;
 
+const defaultConnector = uiConnector ? uiConnector.connector : null;
 
 export default function useWalletConnection({
   connector = defaultConnector,
@@ -65,6 +65,7 @@ export default function useWalletConnection({
           setBalance(newBalance);
         },
         onChainChanged: (newChain) => {
+          console.log("onChainChanged", newChain);
           setChain(newChain);
         },
       });

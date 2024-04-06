@@ -1,7 +1,8 @@
 import { CHIAN } from "../services/contracts/contractReader";
+import { Chain as ViemChain } from "viem";
 
 export interface INetwork {
-  chainId: string | number;
+  id: string | number;
   chainName: string;
   nativeCurrency: {
     name: string;
@@ -13,13 +14,26 @@ export interface INetwork {
   scanName?: string;
 }
 
+export interface Chain {
+  id: string | number;
+  chainName: string;
+  nativeCurrency: {
+    name: string;
+    symbol: string;
+    decimals: 4 | 9 | 11 | 18 | number;
+  };
+  rpcUrls: { http: { default: string[] } };
+  blockExplorerUrls: Array<string>;
+  scanName?: string;
+}
+
 export interface INetworks {
   [Network: string]: INetwork;
 }
 export interface IChainInfo {
   mainnet: number;
   testnet: number;
-  chainId?: number;
+  id?: number;
   themeColor: string;
   iconUrl: string;
   name: string;
@@ -60,9 +74,24 @@ export const CHAINS: IChains = {
   },
 };
 
+export const mapToFitViem = (network: INetwork): ViemChain => {
+  console.log({ __:network });
+
+  return {
+    ...network,
+    id: +network.id,
+    name: network.chainName,
+    rpcUrls: {
+      default: {
+        http: [...network.rpcUrls],
+      },
+    },
+  };
+};
+
 export const ethereumNetworks: INetworks = {
   1: {
-    chainId: "0x1",
+    id: "0x1",
     chainName: "Ethereum Mainnet",
     nativeCurrency: {
       name: "Ether",
@@ -70,6 +99,7 @@ export const ethereumNetworks: INetworks = {
       decimals: 18,
     },
     rpcUrls: [
+      "https://eth.llamarpc.com",
       `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
       `wss://mainnet.infura.io/ws/v3/${process.env.INFURA_API_KEY}`,
       "https://api.mycryptoapi.com/eth",
@@ -78,7 +108,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://etherscan.io"],
   },
   2: {
-    chainId: "0x2",
+    id: "0x2",
     chainName: "Expanse Network",
     nativeCurrency: {
       name: "Expanse Network Ether",
@@ -89,7 +119,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   3: {
-    chainId: "0x3",
+    id: "0x3",
     chainName: "Ethereum Testnet Ropsten",
     nativeCurrency: {
       name: "Ropsten Ether",
@@ -103,7 +133,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://ropsten.etherscan.io"],
   },
   4: {
-    chainId: "0x4",
+    id: "0x4",
     chainName: "Ethereum Testnet Rinkeby",
     nativeCurrency: {
       name: "Rinkeby Ether",
@@ -117,7 +147,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://rinkeby.etherscan.io"],
   },
   5: {
-    chainId: "0x5",
+    id: "0x5",
     chainName: "Ethereum Testnet Görli",
     nativeCurrency: {
       name: "Görli Ether",
@@ -132,7 +162,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://goerli.etherscan.io/"],
   },
   6: {
-    chainId: "0x6",
+    id: "0x6",
     chainName: "Ethereum Classic Testnet Kotti",
     nativeCurrency: {
       name: "Kotti Ether",
@@ -143,7 +173,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   7: {
-    chainId: "0x7",
+    id: "0x7",
     chainName: "ThaiChain",
     nativeCurrency: {
       name: "ThaiChain Ether",
@@ -154,7 +184,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   8: {
-    chainId: "0x8",
+    id: "0x8",
     chainName: "Ubiq",
     nativeCurrency: {
       name: "Ubiq Ether",
@@ -165,7 +195,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://ubiqscan.io"],
   },
   9: {
-    chainId: "0x9",
+    id: "0x9",
     chainName: "Ubiq Network Testnet",
     nativeCurrency: {
       name: "Ubiq Testnet Ether",
@@ -176,7 +206,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   10: {
-    chainId: "0xa",
+    id: "0xa",
     chainName: "Optimism",
     nativeCurrency: {
       name: "Ether",
@@ -187,7 +217,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://optimistic.etherscan.io"],
   },
   11: {
-    chainId: "0xb",
+    id: "0xb",
     chainName: "Metadium Mainnet",
     nativeCurrency: {
       name: "Metadium Mainnet Ether",
@@ -198,7 +228,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   12: {
-    chainId: "0xc",
+    id: "0xc",
     chainName: "Metadium Testnet",
     nativeCurrency: {
       name: "Metadium Testnet Ether",
@@ -209,7 +239,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   13: {
-    chainId: "0xd",
+    id: "0xd",
     chainName: "Diode Testnet Staging",
     nativeCurrency: {
       name: "Staging Diodes",
@@ -223,7 +253,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   14: {
-    chainId: "0xe",
+    id: "0xe",
     chainName: "Flare Mainnet",
     nativeCurrency: {
       name: "Spark",
@@ -234,7 +264,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   15: {
-    chainId: "0xf",
+    id: "0xf",
     chainName: "Diode Prenet",
     nativeCurrency: {
       name: "Diodes",
@@ -245,7 +275,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   16: {
-    chainId: "0x10",
+    id: "0x10",
     chainName: "Flare Testnet Coston",
     nativeCurrency: {
       name: "Coston Spark",
@@ -256,7 +286,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   17: {
-    chainId: "0x11",
+    id: "0x11",
     chainName: "ThaiChain 2.0 ThaiFi",
     nativeCurrency: {
       name: "Thaifi Ether",
@@ -267,7 +297,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   18: {
-    chainId: "0x12",
+    id: "0x12",
     chainName: "ThunderCore Testnet",
     nativeCurrency: {
       name: "ThunderCore Testnet Ether",
@@ -278,7 +308,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   19: {
-    chainId: "0x13",
+    id: "0x13",
     chainName: "Songbird Canary-Network",
     nativeCurrency: {
       name: "Songbird",
@@ -289,7 +319,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://songbird-explorer.flare.network"],
   },
   20: {
-    chainId: "0x14",
+    id: "0x14",
     chainName: "ELA-ETH-Sidechain Mainnet",
     nativeCurrency: {
       name: "Elastos",
@@ -300,7 +330,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   21: {
-    chainId: "0x15",
+    id: "0x15",
     chainName: "ELA-ETH-Sidechain Testnet",
     nativeCurrency: {
       name: "Elastos",
@@ -311,7 +341,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   22: {
-    chainId: "0x16",
+    id: "0x16",
     chainName: "ELA-DID-Sidechain Mainnet",
     nativeCurrency: {
       name: "Elastos",
@@ -322,7 +352,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   23: {
-    chainId: "0x17",
+    id: "0x17",
     chainName: "ELA-DID-Sidechain Testnet",
     nativeCurrency: {
       name: "Elastos",
@@ -333,7 +363,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   30: {
-    chainId: "0x1e",
+    id: "0x1e",
     chainName: "RSK Mainnet",
     nativeCurrency: {
       name: "RSK Mainnet Ether",
@@ -344,7 +374,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.rsk.co"],
   },
   31: {
-    chainId: "0x1f",
+    id: "0x1f",
     chainName: "RSK Testnet",
     nativeCurrency: {
       name: "RSK Testnet Ether",
@@ -358,7 +388,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   32: {
-    chainId: "0x20",
+    id: "0x20",
     chainName: "GoodData Testnet",
     nativeCurrency: {
       name: "GoodData Testnet Ether",
@@ -369,7 +399,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   33: {
-    chainId: "0x21",
+    id: "0x21",
     chainName: "GoodData Mainnet",
     nativeCurrency: {
       name: "GoodData Mainnet Ether",
@@ -380,7 +410,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   35: {
-    chainId: "0x23",
+    id: "0x23",
     chainName: "TBWG Chain",
     nativeCurrency: {
       name: "TBWG Ether",
@@ -391,7 +421,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   38: {
-    chainId: "0x26",
+    id: "0x26",
     chainName: "Valorbit",
     nativeCurrency: {
       name: "Valorbit",
@@ -402,7 +432,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   40: {
-    chainId: "0x28",
+    id: "0x28",
     chainName: "Telos",
     nativeCurrency: {
       name: "Telos",
@@ -413,7 +443,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://www.teloscan.io"],
   },
   41: {
-    chainId: "0x29",
+    id: "0x29",
     chainName: "Telos",
     nativeCurrency: {
       name: "Telos",
@@ -424,7 +454,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://testnet.teloscan.io/"],
   },
   42: {
-    chainId: "0x2a",
+    id: "0x2a",
     chainName: "Ethereum Testnet Kovan",
     nativeCurrency: {
       name: "Kovan Ether",
@@ -441,7 +471,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   43: {
-    chainId: "0x2b",
+    id: "0x2b",
     chainName: "Darwinia Pangolin Testnet",
     nativeCurrency: {
       name: "Pangolin RING",
@@ -452,7 +482,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   44: {
-    chainId: "0x2c",
+    id: "0x2c",
     chainName: "Darwinia Crab Network",
     nativeCurrency: {
       name: "Crab Token",
@@ -463,7 +493,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   50: {
-    chainId: "0x32",
+    id: "0x32",
     chainName: "XinFin Network Mainnet",
     nativeCurrency: {
       name: "XinFin",
@@ -474,7 +504,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   51: {
-    chainId: "0x33",
+    id: "0x33",
     chainName: "XinFin Apothem Testnet",
     nativeCurrency: {
       name: "XinFinTest",
@@ -485,7 +515,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   52: {
-    chainId: "0x34",
+    id: "0x34",
     chainName: "CoinEx Smart Chain Mainnet",
     nativeCurrency: {
       name: "CoinEx Chain Native Token",
@@ -496,7 +526,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   53: {
-    chainId: "0x35",
+    id: "0x35",
     chainName: "CoinEx Smart Chain Testnet",
     nativeCurrency: {
       name: "CoinEx Chain Test Native Token",
@@ -507,7 +537,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   56: {
-    chainId: "0x38",
+    id: "0x38",
     chainName: "BNB Chain Mainnet",
     nativeCurrency: {
       name: "Binance Chain Native Token",
@@ -533,7 +563,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://bscscan.com"],
   },
   58: {
-    chainId: "0x3a",
+    id: "0x3a",
     chainName: "Ontology Mainnet",
     nativeCurrency: {
       name: "ONG",
@@ -549,7 +579,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.ont.io/"],
   },
   59: {
-    chainId: "0x3b",
+    id: "0x3b",
     chainName: "EOS Mainnet",
     nativeCurrency: {
       name: "EOS",
@@ -560,7 +590,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://bloks.eosargentina.io"],
   },
   60: {
-    chainId: "0x3c",
+    id: "0x3c",
     chainName: "GoChain",
     nativeCurrency: {
       name: "GoChain Ether",
@@ -571,7 +601,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.gochain.io"],
   },
   61: {
-    chainId: "0x3d",
+    id: "0x3d",
     chainName: "Ethereum Classic Mainnet",
     nativeCurrency: {
       name: "Ethereum Classic Ether",
@@ -582,7 +612,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://blockscout.com/etc/mainnet"],
   },
   62: {
-    chainId: "0x3e",
+    id: "0x3e",
     chainName: "Ethereum Classic Testnet Morden",
     nativeCurrency: {
       name: "Ethereum Classic Testnet Ether",
@@ -593,7 +623,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   63: {
-    chainId: "0x3f",
+    id: "0x3f",
     chainName: "Ethereum Classic Testnet Mordor",
     nativeCurrency: {
       name: "Mordor Classic Testnet Ether",
@@ -604,7 +634,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   64: {
-    chainId: "0x40",
+    id: "0x40",
     chainName: "Ellaism",
     nativeCurrency: {
       name: "Ellaism Ether",
@@ -615,7 +645,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   65: {
-    chainId: "0x41",
+    id: "0x41",
     chainName: "OKExChain Testnet",
     nativeCurrency: {
       name: "OKExChain Global Utility Token in testnet",
@@ -626,7 +656,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://www.oklink.com/okexchain-test"],
   },
   66: {
-    chainId: "0x42",
+    id: "0x42",
     chainName: "OKExChain Mainnet",
     nativeCurrency: {
       name: "OKExChain Global Utility Token",
@@ -637,7 +667,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://www.oklink.com/okexchain"],
   },
   67: {
-    chainId: "0x43",
+    id: "0x43",
     chainName: "DBChain Testnet",
     nativeCurrency: {
       name: "DBChain Testnet",
@@ -648,7 +678,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   68: {
-    chainId: "0x44",
+    id: "0x44",
     chainName: "SoterOne Mainnet",
     nativeCurrency: {
       name: "SoterOne Mainnet Ether",
@@ -659,7 +689,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   69: {
-    chainId: "0x45",
+    id: "0x45",
     chainName: "Optimism",
     nativeCurrency: {
       name: "Kovan Ether",
@@ -670,7 +700,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   71: {
-    chainId: "0x47",
+    id: "0x47",
     chainName: "Conflux eSpace Testnet",
     nativeCurrency: {
       name: "CFX",
@@ -681,7 +711,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://evmtestnet.confluxscan.net"],
   },
   76: {
-    chainId: "0x4c",
+    id: "0x4c",
     chainName: "Mix",
     nativeCurrency: {
       name: "Mix Ether",
@@ -692,7 +722,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   77: {
-    chainId: "0x4d",
+    id: "0x4d",
     chainName: "POA Network Sokol",
     nativeCurrency: {
       name: "POA Sokol Ether",
@@ -707,7 +737,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://blockscout.com/poa/sokol"],
   },
   78: {
-    chainId: "0x4e",
+    id: "0x4e",
     chainName: "PrimusChain Mainnet",
     nativeCurrency: {
       name: "Primus Ether",
@@ -718,7 +748,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   80: {
-    chainId: "0x50",
+    id: "0x50",
     chainName: "GeneChain",
     nativeCurrency: {
       name: "RNA",
@@ -729,7 +759,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://scan.genechain.io"],
   },
   82: {
-    chainId: "0x52",
+    id: "0x52",
     chainName: "Meter Mainnet",
     nativeCurrency: {
       name: "Meter",
@@ -740,7 +770,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   85: {
-    chainId: "0x55",
+    id: "0x55",
     chainName: "GateChain Testnet",
     nativeCurrency: {
       name: "GateToken",
@@ -751,7 +781,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://www.gatescan.org/testnet"],
   },
   86: {
-    chainId: "0x56",
+    id: "0x56",
     chainName: "GateChain Mainnet",
     nativeCurrency: {
       name: "GateToken",
@@ -762,7 +792,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://www.gatescan.org"],
   },
   88: {
-    chainId: "0x58",
+    id: "0x58",
     chainName: "TomoChain",
     nativeCurrency: {
       name: "TomoChain Ether",
@@ -773,7 +803,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   95: {
-    chainId: "0x5f",
+    id: "0x5f",
     chainName: "CryptoKylin Testnet",
     nativeCurrency: {
       name: "EOS",
@@ -784,7 +814,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://kylin.eosargentina.io"],
   },
   97: {
-    chainId: "0x61",
+    id: "0x61",
     chainName: "BNB Chain Testnet",
     nativeCurrency: {
       name: "Binance Chain Native Token",
@@ -802,7 +832,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://testnet.bscscan.com"],
   },
   99: {
-    chainId: "0x63",
+    id: "0x63",
     chainName: "POA Network Core",
     nativeCurrency: {
       name: "POA Network Core Ether",
@@ -818,7 +848,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://blockscout.com/poa/core"],
   },
   100: {
-    chainId: "0x64",
+    id: "0x64",
     chainName: "xDAI Chain",
     nativeCurrency: {
       name: "xDAI",
@@ -837,7 +867,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://blockscout.com/poa/xdai"],
   },
   101: {
-    chainId: "0x65",
+    id: "0x65",
     chainName: "EtherInc",
     nativeCurrency: {
       name: "EtherInc Ether",
@@ -848,7 +878,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   102: {
-    chainId: "0x66",
+    id: "0x66",
     chainName: "Web3Games Testnet",
     nativeCurrency: {
       name: "Web3Games",
@@ -859,7 +889,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   108: {
-    chainId: "0x6c",
+    id: "0x6c",
     chainName: "ThunderCore Mainnet",
     nativeCurrency: {
       name: "ThunderCore Mainnet Ether",
@@ -870,7 +900,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   110: {
-    chainId: "0x6e",
+    id: "0x6e",
     chainName: "Proton Testnet",
     nativeCurrency: {
       name: "Proton",
@@ -881,7 +911,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   111: {
-    chainId: "0x6f",
+    id: "0x6f",
     chainName: "EtherLite Chain",
     nativeCurrency: {
       name: "EtherLite",
@@ -892,7 +922,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   122: {
-    chainId: "0x7a",
+    id: "0x7a",
     chainName: "Fuse Mainnet",
     nativeCurrency: {
       name: "Fuse",
@@ -903,7 +933,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.fuse.io/"],
   },
   123: {
-    chainId: "0x7b",
+    id: "0x7b",
     chainName: "Fuse Testnet",
     nativeCurrency: {
       name: "Fuse",
@@ -914,7 +944,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.fusespark.io/"],
   },
   124: {
-    chainId: "0x7c",
+    id: "0x7c",
     chainName: "Decentralized Web Mainnet",
     nativeCurrency: {
       name: "Decentralized Web Utility",
@@ -925,7 +955,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   127: {
-    chainId: "0x7f",
+    id: "0x7f",
     chainName: "Factory 127 Mainnet",
     nativeCurrency: {
       name: "Factory 127 Token",
@@ -936,7 +966,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   128: {
-    chainId: "0x80",
+    id: "0x80",
     chainName: "Huobi ECO Chain Mainnet",
     nativeCurrency: {
       name: "Huobi ECO Chain Native Token",
@@ -950,7 +980,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://hecoinfo.com"],
   },
   1030: {
-    chainId: "0x406",
+    id: "0x406",
     chainName: "Conflux eSpace",
     nativeCurrency: {
       name: "CFX",
@@ -962,7 +992,7 @@ export const ethereumNetworks: INetworks = {
   },
 
   137: {
-    chainId: "0x89",
+    id: "0x89",
     chainName: "Polygon Mainnet",
     nativeCurrency: {
       name: "Matic",
@@ -980,7 +1010,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://polygonscan.com"],
   },
   142: {
-    chainId: "0x8e",
+    id: "0x8e",
     chainName: "DAX CHAIN",
     nativeCurrency: {
       name: "Prodax",
@@ -991,7 +1021,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   162: {
-    chainId: "0xa2",
+    id: "0xa2",
     chainName: "Lightstreams Testnet",
     nativeCurrency: {
       name: "Lightstreams PHT",
@@ -1002,7 +1032,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   163: {
-    chainId: "0xa3",
+    id: "0xa3",
     chainName: "Lightstreams Mainnet",
     nativeCurrency: {
       name: "Lightstreams PHT",
@@ -1013,7 +1043,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   170: {
-    chainId: "0xaa",
+    id: "0xaa",
     chainName: "HOO Smart Chain Testnet",
     nativeCurrency: {
       name: "HOO",
@@ -1024,7 +1054,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   172: {
-    chainId: "0xac",
+    id: "0xac",
     chainName: "Latam-Blockchain Resil Testnet",
     nativeCurrency: {
       name: "Latam-Blockchain Resil Test Native Token",
@@ -1038,7 +1068,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   200: {
-    chainId: "0xc8",
+    id: "0xc8",
     chainName: "Arbitrum on xDai",
     nativeCurrency: {
       name: "xDAI",
@@ -1049,7 +1079,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://blockscout.com/xdai/arbitrum"],
   },
   211: {
-    chainId: "0xd3",
+    id: "0xd3",
     chainName: "Freight Trust Network",
     nativeCurrency: {
       name: "Freight Trust Native",
@@ -1063,7 +1093,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   246: {
-    chainId: "0xf6",
+    id: "0xf6",
     chainName: "Energy Web Chain",
     nativeCurrency: {
       name: "Energy Web Token",
@@ -1074,7 +1104,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.energyweb.org"],
   },
   250: {
-    chainId: "0xfa",
+    id: "0xfa",
     chainName: "Fantom",
     nativeCurrency: {
       name: "Fantom",
@@ -1085,7 +1115,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://ftmscan.com"],
   },
   256: {
-    chainId: "0x100",
+    id: "0x100",
     chainName: "Huobi ECO Chain Testnet",
     nativeCurrency: {
       name: "Huobi ECO Chain Test Native Token",
@@ -1099,7 +1129,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   262: {
-    chainId: "0x106",
+    id: "0x106",
     chainName: "SUR Blockchain Network",
     nativeCurrency: {
       name: "Suren",
@@ -1110,7 +1140,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.surnet.org/"],
   },
   269: {
-    chainId: "0x10d",
+    id: "0x10d",
     chainName: "High Performance Blockchain",
     nativeCurrency: {
       name: "High Performance Blockchain Ether",
@@ -1121,7 +1151,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://hpbscan.org/"],
   },
   321: {
-    chainId: "0x141",
+    id: "0x141",
     chainName: "KCC Mainnet",
     nativeCurrency: {
       name: "KuCoin Token",
@@ -1135,7 +1165,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.kcc.io/en"],
   },
   322: {
-    chainId: "0x142",
+    id: "0x142",
     chainName: "KCC Testnet",
     nativeCurrency: {
       name: "KuCoin Testnet Token",
@@ -1149,7 +1179,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://scan-testnet.kcc.network"],
   },
   336: {
-    chainId: "0x150",
+    id: "0x150",
     chainName: "Shiden",
     nativeCurrency: {
       name: "Shiden",
@@ -1163,7 +1193,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://shiden.subscan.io"],
   },
   361: {
-    chainId: "0x169",
+    id: "0x169",
     chainName: "Theta Mainnet",
     nativeCurrency: {
       name: "Theta Fuel",
@@ -1174,7 +1204,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.thetatoken.org"],
   },
   363: {
-    chainId: "0x16b",
+    id: "0x16b",
     chainName: "Theta Sapphire Testnet",
     nativeCurrency: {
       name: "Theta Fuel",
@@ -1187,7 +1217,7 @@ export const ethereumNetworks: INetworks = {
     ],
   },
   364: {
-    chainId: "0x16c",
+    id: "0x16c",
     chainName: "Theta Amber Testnet",
     nativeCurrency: {
       name: "Theta Fuel",
@@ -1200,7 +1230,7 @@ export const ethereumNetworks: INetworks = {
     ],
   },
   365: {
-    chainId: "0x16d",
+    id: "0x16d",
     chainName: "Theta Testnet",
     nativeCurrency: {
       name: "Theta Fuel",
@@ -1211,7 +1241,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://testnet-explorer.thetatoken.org"],
   },
   369: {
-    chainId: "0x171",
+    id: "0x171",
     chainName: "PulseChain Mainnet",
     nativeCurrency: {
       name: "Pulse",
@@ -1225,7 +1255,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   385: {
-    chainId: "0x181",
+    id: "0x181",
     chainName: "Lisinski",
     nativeCurrency: {
       name: "Lisinski Ether",
@@ -1236,7 +1266,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   420: {
-    chainId: "0x1a4",
+    id: "0x1a4",
     chainName: "Optimism",
     nativeCurrency: {
       name: "Görli Ether",
@@ -1247,7 +1277,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://goerli-optimism.etherscan.io/"],
   },
   499: {
-    chainId: "0x1f3",
+    id: "0x1f3",
     chainName: "Rupaya",
     nativeCurrency: {
       name: "Rupaya",
@@ -1258,7 +1288,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   558: {
-    chainId: "0x22e",
+    id: "0x22e",
     chainName: "Tao Network",
     nativeCurrency: {
       name: "Tao",
@@ -1274,7 +1304,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   568: {
-    chainId: "0x238",
+    id: "0x238",
     chainName: "Dogechain Testnet",
     nativeCurrency: {
       name: "Dogecoin",
@@ -1285,7 +1315,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer-testnet.dogechain.dog"],
   },
   595: {
-    chainId: "0x253",
+    id: "0x253",
     chainName: "Acala Mandala Testnet",
     nativeCurrency: {
       name: "Acala Mandala Token",
@@ -1296,7 +1326,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   686: {
-    chainId: "0x2ae",
+    id: "0x2ae",
     chainName: "Karura Network",
     nativeCurrency: {
       name: "Karura Token",
@@ -1307,7 +1337,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   721: {
-    chainId: "0x2d1",
+    id: "0x2d1",
     chainName: "Factory 127 Testnet",
     nativeCurrency: {
       name: "Factory 127 Token",
@@ -1318,7 +1348,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   777: {
-    chainId: "0x309",
+    id: "0x309",
     chainName: "cheapETH",
     nativeCurrency: {
       name: "cTH",
@@ -1329,7 +1359,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   787: {
-    chainId: "0x313",
+    id: "0x313",
     chainName: "Acala Network",
     nativeCurrency: {
       name: "Acala Token",
@@ -1340,7 +1370,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   803: {
-    chainId: "0x323",
+    id: "0x323",
     chainName: "Haic",
     nativeCurrency: {
       name: "Haicoin",
@@ -1351,7 +1381,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   820: {
-    chainId: "0x334",
+    id: "0x334",
     chainName: "Callisto Mainnet",
     nativeCurrency: {
       name: "Callisto Mainnet Ether",
@@ -1362,7 +1392,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   821: {
-    chainId: "0x335",
+    id: "0x335",
     chainName: "Callisto Testnet",
     nativeCurrency: {
       name: "Callisto Testnet Ether",
@@ -1373,7 +1403,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   888: {
-    chainId: "0x378",
+    id: "0x378",
     chainName: "Wanchain",
     nativeCurrency: {
       name: "Wancoin",
@@ -1384,7 +1414,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   940: {
-    chainId: "0x3ac",
+    id: "0x3ac",
     chainName: "PulseChain Testnet",
     nativeCurrency: {
       name: "Test Pulse",
@@ -1398,7 +1428,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   977: {
-    chainId: "0x3d1",
+    id: "0x3d1",
     chainName: "Nepal Blockchain Network",
     nativeCurrency: {
       name: "Nepal Blockchain Network Ether",
@@ -1412,7 +1442,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   999: {
-    chainId: "0x3e7",
+    id: "0x3e7",
     chainName: "Wanchain Testnet",
     nativeCurrency: {
       name: "Wancoin",
@@ -1423,7 +1453,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1001: {
-    chainId: "0x3e9",
+    id: "0x3e9",
     chainName: "Klaytn Testnet Baobab",
     nativeCurrency: {
       name: "KLAY",
@@ -1434,7 +1464,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1007: {
-    chainId: "0x3ef",
+    id: "0x3ef",
     chainName: "Newton Testnet",
     nativeCurrency: {
       name: "Newton",
@@ -1445,7 +1475,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1010: {
-    chainId: "0x3f2",
+    id: "0x3f2",
     chainName: "Evrice Network",
     nativeCurrency: {
       name: "Evrice",
@@ -1456,7 +1486,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1012: {
-    chainId: "0x3f4",
+    id: "0x3f4",
     chainName: "Newton",
     nativeCurrency: {
       name: "Newton",
@@ -1467,7 +1497,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1022: {
-    chainId: "0x3fe",
+    id: "0x3fe",
     chainName: "Sakura",
     nativeCurrency: {
       name: "Sakura",
@@ -1478,7 +1508,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1023: {
-    chainId: "0x3ff",
+    id: "0x3ff",
     chainName: "Clover Testnet",
     nativeCurrency: {
       name: "Clover",
@@ -1489,7 +1519,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1024: {
-    chainId: "0x400",
+    id: "0x400",
     chainName: "Clover Mainnet",
     nativeCurrency: {
       name: "Clover",
@@ -1504,7 +1534,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1139: {
-    chainId: "0x473",
+    id: "0x473",
     chainName: "MathChain",
     nativeCurrency: {
       name: "MathChain",
@@ -1518,7 +1548,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1140: {
-    chainId: "0x474",
+    id: "0x474",
     chainName: "MathChain Testnet",
     nativeCurrency: {
       name: "MathChain",
@@ -1529,7 +1559,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1284: {
-    chainId: "0x504",
+    id: "0x504",
     chainName: "Moonbeam",
     nativeCurrency: {
       name: "Glimmer",
@@ -1540,7 +1570,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1285: {
-    chainId: "0x505",
+    id: "0x505",
     chainName: "Moonriver",
     nativeCurrency: {
       name: "Moonriver",
@@ -1554,7 +1584,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://blockscout.moonriver.moonbeam.network"],
   },
   1286: {
-    chainId: "0x506",
+    id: "0x506",
     chainName: "Moonrock",
     nativeCurrency: {
       name: "Rocs",
@@ -1565,7 +1595,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1287: {
-    chainId: "0x507",
+    id: "0x507",
     chainName: "Moonbase Alpha",
     nativeCurrency: {
       name: "Dev",
@@ -1579,7 +1609,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://moonbase.moonscan.io"],
   },
   1288: {
-    chainId: "0x508",
+    id: "0x508",
     chainName: "Moonshadow",
     nativeCurrency: {
       name: "Moonshadow",
@@ -1590,7 +1620,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1618: {
-    chainId: "0x652",
+    id: "0x652",
     chainName: "Catecoin Chain Mainnet",
     nativeCurrency: {
       name: "Catecoin",
@@ -1601,7 +1631,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1620: {
-    chainId: "0x654",
+    id: "0x654",
     chainName: "Atheios",
     nativeCurrency: {
       name: "Atheios Ether",
@@ -1612,7 +1642,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1657: {
-    chainId: "0x679",
+    id: "0x679",
     chainName: "Btachain",
     nativeCurrency: {
       name: "Bitcoin Asset",
@@ -1623,7 +1653,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1856: {
-    chainId: "0x740",
+    id: "0x740",
     chainName: "Teslafunds",
     nativeCurrency: {
       name: "Teslafunds Ether",
@@ -1634,7 +1664,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1987: {
-    chainId: "0x7c3",
+    id: "0x7c3",
     chainName: "EtherGem",
     nativeCurrency: {
       name: "EtherGem Ether",
@@ -1645,7 +1675,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   2000: {
-    chainId: "0x7d0",
+    id: "0x7d0",
     chainName: "Dogechain Mainnet",
     nativeCurrency: {
       name: "Dogecoin",
@@ -1663,7 +1693,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.dogechain.dog"],
   },
   2001: {
-    chainId: "0x7d1",
+    id: "0x7d1",
     chainName: "Milkomeda C1",
     nativeCurrency: {
       name: "milkADA",
@@ -1676,7 +1706,7 @@ export const ethereumNetworks: INetworks = {
     ],
   },
   2020: {
-    chainId: "0x7e4",
+    id: "0x7e4",
     chainName: "420coin",
     nativeCurrency: {
       name: "Fourtwenty",
@@ -1687,7 +1717,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   2021: {
-    chainId: "0x7e5",
+    id: "0x7e5",
     chainName: "Edgeware Mainnet",
     nativeCurrency: {
       name: "Edge",
@@ -1698,7 +1728,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   2022: {
-    chainId: "0x7e6",
+    id: "0x7e6",
     chainName: "Beresheet Testnet",
     nativeCurrency: {
       name: "Testnet Edge",
@@ -1709,7 +1739,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   2559: {
-    chainId: "0x9ff",
+    id: "0x9ff",
     chainName: "Kortho Mainnet",
     nativeCurrency: {
       name: "KorthoChain",
@@ -1720,7 +1750,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   4002: {
-    chainId: "0xfa2",
+    id: "0xfa2",
     chainName: "Fantom Testnet",
     nativeCurrency: {
       name: "Fantom",
@@ -1731,7 +1761,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://testnet.ftmscan.com/"],
   },
   4689: {
-    chainId: "0x1251",
+    id: "0x1251",
     chainName: "IoTeX Network Mainnet",
     nativeCurrency: {
       name: "IoTeX",
@@ -1742,7 +1772,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://iotexscan.io"],
   },
   4690: {
-    chainId: "0x1252",
+    id: "0x1252",
     chainName: "IoTeX Network Testnet",
     nativeCurrency: {
       name: "IoTeX",
@@ -1753,7 +1783,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://testnet.iotexscan.io"],
   },
   5197: {
-    chainId: "0x144d",
+    id: "0x144d",
     chainName: "EraSwap Mainnet",
     nativeCurrency: {
       name: "EraSwap",
@@ -1767,7 +1797,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   5611: {
-    chainId: "0x15eb",
+    id: "0x15eb",
     chainName: "OpBNB Testnet",
     nativeCurrency: {
       name: "OpBNB",
@@ -1778,7 +1808,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://opbnbscan.com/"],
   },
   5700: {
-    chainId: "0x1644",
+    id: "0x1644",
     chainName: "Syscoin Tanenbaum Testnet",
     nativeCurrency: {
       name: "Testnet Syscoin",
@@ -1789,7 +1819,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://tanenbaum.io"],
   },
   5851: {
-    chainId: "0x16db",
+    id: "0x16db",
     chainName: "Ontology Testnet",
     nativeCurrency: {
       name: "ONG",
@@ -1805,7 +1835,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.ont.io/testnet"],
   },
   5869: {
-    chainId: "0x16ed",
+    id: "0x16ed",
     chainName: "Wegochain Rubidium Mainnet",
     nativeCurrency: {
       name: "Rubid",
@@ -1816,7 +1846,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   8029: {
-    chainId: "0x1f5d",
+    id: "0x1f5d",
     chainName: "MDGL Testnet",
     nativeCurrency: {
       name: "MDGL Token",
@@ -1827,7 +1857,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   8080: {
-    chainId: "0x1f90",
+    id: "0x1f90",
     chainName: "GeneChain Adenine Testnet",
     nativeCurrency: {
       name: "Testnet RNA",
@@ -1838,7 +1868,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://scan-testnet.genechain.io"],
   },
   8217: {
-    chainId: "0x2019",
+    id: "0x2019",
     chainName: "Klaytn Mainnet Cypress",
     nativeCurrency: {
       name: "KLAY",
@@ -1849,7 +1879,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   8285: {
-    chainId: "0x205d",
+    id: "0x205d",
     chainName: "KorthoTest",
     nativeCurrency: {
       name: "Kortho Test",
@@ -1860,7 +1890,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   8723: {
-    chainId: "0x2213",
+    id: "0x2213",
     chainName: "TOOL Global Mainnet",
     nativeCurrency: {
       name: "TOOL Global",
@@ -1871,7 +1901,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://www.olo.network"],
   },
   8724: {
-    chainId: "0x2214",
+    id: "0x2214",
     chainName: "TOOL Global Testnet",
     nativeCurrency: {
       name: "TOOL Global",
@@ -1882,7 +1912,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   8995: {
-    chainId: "0x2323",
+    id: "0x2323",
     chainName: "bloxberg",
     nativeCurrency: {
       name: "BERG",
@@ -1893,7 +1923,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   9000: {
-    chainId: "0x2328",
+    id: "0x2328",
     chainName: "Evmos Testnet",
     nativeCurrency: {
       name: "Photon",
@@ -1904,7 +1934,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://evm.evmos.org", "https://explorer.evmos.org"],
   },
   10000: {
-    chainId: "0x2710",
+    id: "0x2710",
     chainName: "Smart Bitcoin Cash",
     nativeCurrency: {
       name: "Bitcoin Cash",
@@ -1919,7 +1949,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   10001: {
-    chainId: "0x2711",
+    id: "0x2711",
     chainName: "Smart Bitcoin Cash Testnet",
     nativeCurrency: {
       name: "Bitcoin Cash Test Token",
@@ -1930,7 +1960,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   10101: {
-    chainId: "0x2775",
+    id: "0x2775",
     chainName: "Blockchain Genesis Mainnet",
     nativeCurrency: {
       name: "GEN",
@@ -1945,7 +1975,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   15557: {
-    chainId: "0x3cc5",
+    id: "0x3cc5",
     chainName: "EOS EVM Network Testnet",
     nativeCurrency: {
       name: "EOS",
@@ -1957,7 +1987,7 @@ export const ethereumNetworks: INetworks = {
   },
 
   16000: {
-    chainId: "0x3e80",
+    id: "0x3e80",
     chainName: "MetaDot Mainnet",
     nativeCurrency: {
       name: "MetaDot Token",
@@ -1968,7 +1998,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   16001: {
-    chainId: "0x3e81",
+    id: "0x3e81",
     chainName: "MetaDot Testnet",
     nativeCurrency: {
       name: "MetaDot Token Testnet",
@@ -1979,7 +2009,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   17777: {
-    chainId: "0x4571",
+    id: "0x4571",
     chainName: "EOS EVM",
     nativeCurrency: {
       name: "EOS",
@@ -1990,7 +2020,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.evm.eosnetwork.com/"],
   },
   24484: {
-    chainId: "0x5fa4",
+    id: "0x5fa4",
     chainName: "Webchain",
     nativeCurrency: {
       name: "Webchain Ether",
@@ -2001,7 +2031,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   24734: {
-    chainId: "0x609e",
+    id: "0x609e",
     chainName: "MintMe.com Coin",
     nativeCurrency: {
       name: "MintMe.com Coin",
@@ -2012,7 +2042,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   31102: {
-    chainId: "0x797e",
+    id: "0x797e",
     chainName: "Ethersocial Network",
     nativeCurrency: {
       name: "Ethersocial Network Ether",
@@ -2023,7 +2053,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   31337: {
-    chainId: "0x7a69",
+    id: "0x7a69",
     chainName: "GoChain Testnet",
     nativeCurrency: {
       name: "GoChain Coin",
@@ -2034,7 +2064,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://testnet-explorer.gochain.io"],
   },
   32659: {
-    chainId: "0x7f93",
+    id: "0x7f93",
     chainName: "Fusion Mainnet",
     nativeCurrency: {
       name: "Fusion",
@@ -2045,7 +2075,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   39797: {
-    chainId: "0x9b75",
+    id: "0x9b75",
     chainName: "Energi Mainnet",
     nativeCurrency: {
       name: "Energi",
@@ -2056,7 +2086,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   42069: {
-    chainId: "0xa455",
+    id: "0xa455",
     chainName: "pegglecoin",
     nativeCurrency: {
       name: "pegglecoin",
@@ -2067,7 +2097,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   42161: {
-    chainId: "0xa4b1",
+    id: "0xa4b1",
     chainName: "Arbitrum",
     nativeCurrency: {
       name: "Ether",
@@ -2083,7 +2113,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://arbiscan.io", "https://explorer.arbitrum.io"],
   },
   42220: {
-    chainId: "0xa4ec",
+    id: "0xa4ec",
     chainName: "Celo Mainnet",
     nativeCurrency: {
       name: "CELO",
@@ -2094,7 +2124,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.celo.org"],
   },
   43110: {
-    chainId: "0xa866",
+    id: "0xa866",
     chainName: "Athereum",
     nativeCurrency: {
       name: "Athereum Ether",
@@ -2105,7 +2135,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   43113: {
-    chainId: "0xa869",
+    id: "0xa869",
     chainName: "Avalanche Fuji Testnet",
     nativeCurrency: {
       name: "Avalanche",
@@ -2116,7 +2146,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://testnet.snowtrace.io/"],
   },
   43114: {
-    chainId: "0xa86a",
+    id: "0xa86a",
     chainName: "Avalanche Mainnet",
     nativeCurrency: {
       name: "Avalanche",
@@ -2127,7 +2157,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://cchain.explorer.avax.network"],
   },
   44787: {
-    chainId: "0xaef3",
+    id: "0xaef3",
     chainName: "Celo Alfajores Testnet",
     nativeCurrency: {
       name: "CELO",
@@ -2141,7 +2171,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   49797: {
-    chainId: "0xc285",
+    id: "0xc285",
     chainName: "Energi Testnet",
     nativeCurrency: {
       name: "Energi",
@@ -2152,7 +2182,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   62320: {
-    chainId: "0xf370",
+    id: "0xf370",
     chainName: "Celo Baklava Testnet",
     nativeCurrency: {
       name: "CELO",
@@ -2163,7 +2193,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   71393: {
-    chainId: "0x116e1",
+    id: "0x116e1",
     chainName: "Polyjuice Testnet",
     nativeCurrency: {
       name: "CKB",
@@ -2177,7 +2207,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   73799: {
-    chainId: "0x12047",
+    id: "0x12047",
     chainName: "Energy Web Volta Testnet",
     nativeCurrency: {
       name: "Volta Token",
@@ -2191,7 +2221,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   78110: {
-    chainId: "0x1311e",
+    id: "0x1311e",
     chainName: "Firenze test network",
     nativeCurrency: {
       name: "Firenze Ether",
@@ -2202,7 +2232,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   80001: {
-    chainId: "0x13881",
+    id: "0x13881",
     chainName: "Polygon Testnet Mumbai",
     nativeCurrency: {
       name: "Matic",
@@ -2213,7 +2243,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
   },
   84531: {
-    chainId: "0x14A33",
+    id: "0x14A33",
     chainName: "BASE",
     nativeCurrency: {
       name: "ETH",
@@ -2225,7 +2255,7 @@ export const ethereumNetworks: INetworks = {
   },
 
   100000: {
-    chainId: "0x186a0",
+    id: "0x186a0",
     chainName: "QuarkChain Mainnet Root",
     nativeCurrency: {
       name: "QKC",
@@ -2236,7 +2266,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   100001: {
-    chainId: "0x186a1",
+    id: "0x186a1",
     chainName: "QuarkChain Mainnet Shard 0",
     nativeCurrency: {
       name: "QKC",
@@ -2247,7 +2277,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://mainnet.quarkchain.io/0"],
   },
   100002: {
-    chainId: "0x186a2",
+    id: "0x186a2",
     chainName: "QuarkChain Mainnet Shard 1",
     nativeCurrency: {
       name: "QKC",
@@ -2258,7 +2288,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://mainnet.quarkchain.io/1"],
   },
   100003: {
-    chainId: "0x186a3",
+    id: "0x186a3",
     chainName: "QuarkChain Mainnet Shard 2",
     nativeCurrency: {
       name: "QKC",
@@ -2269,7 +2299,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://mainnet.quarkchain.io/2"],
   },
   100004: {
-    chainId: "0x186a4",
+    id: "0x186a4",
     chainName: "QuarkChain Mainnet Shard 3",
     nativeCurrency: {
       name: "QKC",
@@ -2280,7 +2310,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://mainnet.quarkchain.io/3"],
   },
   100005: {
-    chainId: "0x186a5",
+    id: "0x186a5",
     chainName: "QuarkChain Mainnet Shard 4",
     nativeCurrency: {
       name: "QKC",
@@ -2291,7 +2321,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://mainnet.quarkchain.io/4"],
   },
   100006: {
-    chainId: "0x186a6",
+    id: "0x186a6",
     chainName: "QuarkChain Mainnet Shard 5",
     nativeCurrency: {
       name: "QKC",
@@ -2302,7 +2332,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://mainnet.quarkchain.io/5"],
   },
   100007: {
-    chainId: "0x186a7",
+    id: "0x186a7",
     chainName: "QuarkChain Mainnet Shard 6",
     nativeCurrency: {
       name: "QKC",
@@ -2313,7 +2343,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://mainnet.quarkchain.io/6"],
   },
   100008: {
-    chainId: "0x186a8",
+    id: "0x186a8",
     chainName: "QuarkChain Mainnet Shard 7",
     nativeCurrency: {
       name: "QKC",
@@ -2324,7 +2354,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://mainnet.quarkchain.io/7"],
   },
   110000: {
-    chainId: "0x1adb0",
+    id: "0x1adb0",
     chainName: "QuarkChain Devnet Root",
     nativeCurrency: {
       name: "QKC",
@@ -2335,7 +2365,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   110001: {
-    chainId: "0x1adb1",
+    id: "0x1adb1",
     chainName: "QuarkChain Devnet Shard 0",
     nativeCurrency: {
       name: "QKC",
@@ -2346,7 +2376,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://devnet.quarkchain.io/0"],
   },
   110002: {
-    chainId: "0x1adb2",
+    id: "0x1adb2",
     chainName: "QuarkChain Devnet Shard 1",
     nativeCurrency: {
       name: "QKC",
@@ -2357,7 +2387,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://devnet.quarkchain.io/1"],
   },
   110003: {
-    chainId: "0x1adb3",
+    id: "0x1adb3",
     chainName: "QuarkChain Devnet Shard 2",
     nativeCurrency: {
       name: "QKC",
@@ -2368,7 +2398,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://devnet.quarkchain.io/2"],
   },
   110004: {
-    chainId: "0x1adb4",
+    id: "0x1adb4",
     chainName: "QuarkChain Devnet Shard 3",
     nativeCurrency: {
       name: "QKC",
@@ -2379,7 +2409,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://devnet.quarkchain.io/3"],
   },
   110005: {
-    chainId: "0x1adb5",
+    id: "0x1adb5",
     chainName: "QuarkChain Devnet Shard 4",
     nativeCurrency: {
       name: "QKC",
@@ -2390,7 +2420,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://devnet.quarkchain.io/4"],
   },
   110006: {
-    chainId: "0x1adb6",
+    id: "0x1adb6",
     chainName: "QuarkChain Devnet Shard 5",
     nativeCurrency: {
       name: "QKC",
@@ -2401,7 +2431,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://devnet.quarkchain.io/5"],
   },
   110007: {
-    chainId: "0x1adb7",
+    id: "0x1adb7",
     chainName: "QuarkChain Devnet Shard 6",
     nativeCurrency: {
       name: "QKC",
@@ -2412,7 +2442,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://devnet.quarkchain.io/6"],
   },
   110008: {
-    chainId: "0x1adb8",
+    id: "0x1adb8",
     chainName: "QuarkChain Devnet Shard 7",
     nativeCurrency: {
       name: "QKC",
@@ -2423,7 +2453,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://devnet.quarkchain.io/7"],
   },
   200101: {
-    chainId: "0x30da5",
+    id: "0x30da5",
     chainName: "Milkomeda Testnet",
     nativeCurrency: {
       name: "MilkADA",
@@ -2434,7 +2464,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer-devnet-cardano-evm.c1.milkomeda.com"],
   },
   200625: {
-    chainId: "0x30fb1",
+    id: "0x30fb1",
     chainName: "Akroma",
     nativeCurrency: {
       name: "Akroma Ether",
@@ -2445,7 +2475,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   246529: {
-    chainId: "0x3c301",
+    id: "0x3c301",
     chainName: "ARTIS sigma1",
     nativeCurrency: {
       name: "ARTIS sigma1 Ether",
@@ -2456,7 +2486,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   246785: {
-    chainId: "0x3c401",
+    id: "0x3c401",
     chainName: "ARTIS Testnet tau1",
     nativeCurrency: {
       name: "ARTIS tau1 Ether",
@@ -2467,7 +2497,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   333888: {
-    chainId: "0x51840",
+    id: "0x51840",
     chainName: "Polis Testnet",
     nativeCurrency: {
       name: "tPolis",
@@ -2478,7 +2508,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   333999: {
-    chainId: "0x518af",
+    id: "0x518af",
     chainName: "Polis Mainnet",
     nativeCurrency: {
       name: "Polis",
@@ -2489,7 +2519,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   421611: {
-    chainId: "0x66eeb",
+    id: "0x66eeb",
     chainName: "Arbitrum Testnet Rinkeby",
     nativeCurrency: {
       name: "Arbitrum Rinkeby Ether",
@@ -2503,7 +2533,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://rinkeby-explorer.arbitrum.io"],
   },
   421613: {
-    chainId: "0x66eed",
+    id: "0x66eed",
     chainName: "Arbitrum",
     nativeCurrency: {
       name: "Arbitrum Ether",
@@ -2514,7 +2544,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://goerli.arbiscan.io/"],
   },
   11155111: {
-    chainId: "0xaa36a7",
+    id: "0xaa36a7",
     chainName: "Sepolia",
     nativeCurrency: {
       name: "Sepolia Ether",
@@ -2525,7 +2555,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://sepolia.etherscan.io"],
   },
   1313114: {
-    chainId: "0x14095a",
+    id: "0x14095a",
     chainName: "Ether-1",
     nativeCurrency: {
       name: "Ether-1 Ether",
@@ -2536,7 +2566,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1313500: {
-    chainId: "0x140adc",
+    id: "0x140adc",
     chainName: "Xerom",
     nativeCurrency: {
       name: "Xerom Ether",
@@ -2547,7 +2577,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   7762959: {
-    chainId: "0x76740f",
+    id: "0x76740f",
     chainName: "Musicoin",
     nativeCurrency: {
       name: "Musicoin",
@@ -2558,7 +2588,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   13371337: {
-    chainId: "0xcc07c9",
+    id: "0xcc07c9",
     chainName: "PepChain Churchill",
     nativeCurrency: {
       name: "PepChain Churchill Ether",
@@ -2569,7 +2599,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   18289463: {
-    chainId: "0x1171337",
+    id: "0x1171337",
     chainName: "IOLite",
     nativeCurrency: {
       name: "IOLite Ether",
@@ -2580,7 +2610,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   20181205: {
-    chainId: "0x133f0d5",
+    id: "0x133f0d5",
     chainName: "quarkblockchain",
     nativeCurrency: {
       name: "quarkblockchain Native Token",
@@ -2591,7 +2621,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   28945486: {
-    chainId: "0x1b9ac4e",
+    id: "0x1b9ac4e",
     chainName: "Auxilium Network Mainnet",
     nativeCurrency: {
       name: "Auxilium coin",
@@ -2602,7 +2632,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   35855456: {
-    chainId: "0x2231c60",
+    id: "0x2231c60",
     chainName: "Joys Digital Mainnet",
     nativeCurrency: {
       name: "JOYS",
@@ -2613,7 +2643,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   61717561: {
-    chainId: "0x3adbc39",
+    id: "0x3adbc39",
     chainName: "Aquachain",
     nativeCurrency: {
       name: "Aquachain Ether",
@@ -2624,7 +2654,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   99415706: {
-    chainId: "0x5ecf69a",
+    id: "0x5ecf69a",
     chainName: "Joys Digital Testnet",
     nativeCurrency: {
       name: "TOYS",
@@ -2635,7 +2665,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   222000222: {
-    chainId: "0xd3b745e",
+    id: "0xd3b745e",
     chainName: "Meld Testnet",
     nativeCurrency: {
       name: "MELD",
@@ -2646,7 +2676,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://subnets-test.avax.network/meld/"],
   },
   245022926: {
-    chainId: "0xe9ac0ce",
+    id: "0xe9ac0ce",
     chainName: "Neon EVM DevNet",
     nativeCurrency: {
       name: "Neon",
@@ -2657,7 +2687,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   245022934: {
-    chainId: "0xe9ac0d6",
+    id: "0xe9ac0d6",
     chainName: "Neon EVM Mainnet",
     nativeCurrency: {
       name: "Neon",
@@ -2668,7 +2698,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   245022940: {
-    chainId: "0xe9ac0dc",
+    id: "0xe9ac0dc",
     chainName: "Neon EVM Testnet",
     nativeCurrency: {
       name: "Neon",
@@ -2679,7 +2709,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   311752642: {
-    chainId: "0x1294f7c2",
+    id: "0x1294f7c2",
     chainName: "OneLedger Mainnet",
     nativeCurrency: {
       name: "OLT",
@@ -2690,7 +2720,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://mainnet-explorer.oneledger.network"],
   },
   333000333: {
-    chainId: "0x13d92e8d",
+    id: "0x13d92e8d",
     chainName: "Meld Mainnet",
     nativeCurrency: {
       name: "Meld",
@@ -2701,7 +2731,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://subnets.avax.network/meld"],
   },
   1122334455: {
-    chainId: "0x42e576f7",
+    id: "0x42e576f7",
     chainName: "IPOS Network",
     nativeCurrency: {
       name: "IPOS Network Ether",
@@ -2712,7 +2742,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1313161554: {
-    chainId: "0x4e454152",
+    id: "0x4e454152",
     chainName: "Aurora Mainnet",
     nativeCurrency: {
       name: "Ether",
@@ -2723,7 +2753,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://aurorascan.dev"],
   },
   1313161555: {
-    chainId: "0x4e454153",
+    id: "0x4e454153",
     chainName: "Aurora Testnet",
     nativeCurrency: {
       name: "Ether",
@@ -2734,7 +2764,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://testnet.aurorascan.dev"],
   },
   1313161556: {
-    chainId: "0x4e454154",
+    id: "0x4e454154",
     chainName: "Aurora BetaNet",
     nativeCurrency: {
       name: "Ether",
@@ -2745,7 +2775,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1666600000: {
-    chainId: "0x63564c40",
+    id: "0x63564c40",
     chainName: "Harmony Mainnet Shard 0",
     nativeCurrency: {
       name: "ONE",
@@ -2756,7 +2786,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.harmony.one"],
   },
   1666600001: {
-    chainId: "0x63564c41",
+    id: "0x63564c41",
     chainName: "Harmony Mainnet Shard 1",
     nativeCurrency: {
       name: "ONE",
@@ -2767,7 +2797,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1666600002: {
-    chainId: "0x63564c42",
+    id: "0x63564c42",
     chainName: "Harmony Mainnet Shard 2",
     nativeCurrency: {
       name: "ONE",
@@ -2778,7 +2808,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1666600003: {
-    chainId: "0x63564c43",
+    id: "0x63564c43",
     chainName: "Harmony Mainnet Shard 3",
     nativeCurrency: {
       name: "ONE",
@@ -2789,7 +2819,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1666700000: {
-    chainId: "0x6357d2e0",
+    id: "0x6357d2e0",
     chainName: "Harmony Testnet Shard 0",
     nativeCurrency: {
       name: "ONE",
@@ -2800,7 +2830,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://explorer.pops.one"],
   },
   1666700001: {
-    chainId: "0x6357d2e1",
+    id: "0x6357d2e1",
     chainName: "Harmony Testnet Shard 1",
     nativeCurrency: {
       name: "ONE",
@@ -2811,7 +2841,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1666700002: {
-    chainId: "0x6357d2e2",
+    id: "0x6357d2e2",
     chainName: "Harmony Testnet Shard 2",
     nativeCurrency: {
       name: "ONE",
@@ -2822,7 +2852,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   1666700003: {
-    chainId: "0x6357d2e3",
+    id: "0x6357d2e3",
     chainName: "Harmony Testnet Shard 3",
     nativeCurrency: {
       name: "ONE",
@@ -2833,7 +2863,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   3125659152: {
-    chainId: "0xba4dc610",
+    id: "0xba4dc610",
     chainName: "Pirl",
     nativeCurrency: {
       name: "Pirl Ether",
@@ -2844,7 +2874,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   4216137055: {
-    chainId: "0xfb4d255f",
+    id: "0xfb4d255f",
     chainName: "OneLedger Testnet Frankenstein",
     nativeCurrency: {
       name: "OLT",
@@ -2855,7 +2885,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: ["https://frankenstein-explorer.oneledger.network"],
   },
   11297108099: {
-    chainId: "0x2a15c3083",
+    id: "0x2a15c3083",
     chainName: "Palm Testnet",
     nativeCurrency: {
       name: "PALM",
@@ -2866,7 +2896,7 @@ export const ethereumNetworks: INetworks = {
     blockExplorerUrls: [],
   },
   11297108109: {
-    chainId: "0x2a15c308d",
+    id: "0x2a15c308d",
     chainName: "Palm Mainnet",
     nativeCurrency: {
       name: "PALM",
@@ -2880,7 +2910,7 @@ export const ethereumNetworks: INetworks = {
 
 export const cardanoNetworks: INetworks = {
   0: {
-    chainId: "0x0",
+    id: "0x0",
     chainName: "Cardano Testnet",
     nativeCurrency: {
       name: "Ether",
@@ -2891,7 +2921,7 @@ export const cardanoNetworks: INetworks = {
     blockExplorerUrls: ["https://testnet.cardanoscan.io"],
   },
   1: {
-    chainId: "0x1",
+    id: "0x1",
     chainName: "Cardano Mainnet",
     nativeCurrency: {
       name: "Ether",

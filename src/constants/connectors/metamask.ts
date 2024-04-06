@@ -1,4 +1,5 @@
 import {
+  createClient,
   createPublicClient,
   createWalletClient,
   custom,
@@ -7,17 +8,13 @@ import {
 } from "viem";
 import { mainnet } from "viem/chains";
 import { IConnector } from "../../types/connector";
-import { getChainInfo } from "../../services/wallets/mm";
+import { getChainInfo, getViemChain } from "../../services/wallets/mm";
 import { IBalance, IConnectionInfo } from "../../state/types/wallet";
 import EthereumProvider from "@walletconnect/ethereum-provider/dist/types/EthereumProvider";
 import { SDKProvider } from "@metamask/sdk";
+import { etheruemMethods } from "../../services/wallets/etheruemMethods";
 
 const ethereum = window.ethereum;
-
-const publicClient = createPublicClient({
-  chain: mainnet,
-  transport: http(),
-});
 
 export const metamaskConnector: IConnector<SDKProvider> = {
   name: "metamask",
@@ -46,6 +43,12 @@ export const metamaskConnector: IConnector<SDKProvider> = {
 
       const chainId = await client.getChainId();
       const chainInfo = getChainInfo(chainId);
+      const viemChain = getViemChain(chainId);
+
+      const publicClient = createPublicClient({
+        chain: viemChain,
+        transport: http(),
+      });
 
       const balanceValue = await publicClient.getBalance({ address: account });
       const balanceInEth = formatEther(balanceValue);
@@ -69,7 +72,13 @@ export const metamaskConnector: IConnector<SDKProvider> = {
 
   getBalance: async (account, chainId) => {
     const chainInfo = getChainInfo(chainId);
-    const balanceValue = await publicClient.getBalance({
+    const viemChain = getViemChain(chainId);
+
+    const client = createPublicClient({
+      transport: http(),
+      chain: viemChain,
+    });
+    const balanceValue = await client.getBalance({
       address: account as any,
     });
     const balanceInEth = formatEther(balanceValue);
@@ -84,13 +93,14 @@ export const metamaskConnector: IConnector<SDKProvider> = {
   },
 
   getProvider: () => window.ethereum as SDKProvider,
-  getChain: async () => {
+  getChain: async function () {
     const client = createWalletClient({
       chain: mainnet,
       transport: custom(ethereum!),
     });
     const chainId = await client.getChainId();
-    const chainInfo = getChainInfo(chainId);
+    const chainInfo = getChainInfo(+chainId! as number);
+
     return chainInfo;
   },
 
@@ -112,19 +122,16 @@ export const metamaskConnector: IConnector<SDKProvider> = {
       listeners?.onAccountChanged?.(wallets[0]);
 
       const chain = await this?.getChain?.();
-      const newBalance = await this?.getBalance?.(
-        account,
-        chain?.chainId as number
-      );
+      const newBalance = await this?.getBalance?.(account, chain?.id as number);
       if (newBalance) listeners.onBalanceChanged?.(newBalance);
     });
 
-    ethereum.on("chainChanged", async (chain = 0) => {
-      const chainInfo = getChainInfo(chain as number);
+    //@ts-ignore
+    ethereum.on("chainChanged", async (chain: string) => {
+      const chainInfo = getChainInfo(+chain);
       listeners?.onChainChanged?.(chainInfo);
       const account = (await this.getAccount?.()) || "";
-
-      const newBalance = await this?.getBalance?.(account, chain as number);
+      const newBalance = await this?.getBalance?.(account, +chain);
       if (newBalance) listeners.onBalanceChanged?.(newBalance);
     });
   },

@@ -3,8 +3,13 @@ import { IWalletListeners } from "../../state/types/listeners";
 import { IBalance, IChian, IConnectionInfo } from "../../state/types/wallet";
 import { fromWeiToEth } from "../../utils/web3";
 import { newDisplayFloats } from "../../utils/format";
-import { INetwork, ethereumNetworks } from "../../constants/networks";
+import {
+  INetwork,
+  ethereumNetworks,
+  mapToFitViem,
+} from "../../constants/networks";
 import { etheruemMethods } from "./etheruemMethods";
+import { Chain } from "viem";
 
 const ethereum = window.ethereum;
 
@@ -29,6 +34,9 @@ export const getBalance = async (account: string) => {
 
 export const getChainInfo = (chainId: number): INetwork =>
   ethereumNetworks[+chainId];
+
+export const getViemChain = (chainId: number): Chain =>
+  mapToFitViem(ethereumNetworks[+chainId]);
 
 export const getBalanceInfo = (
   balanceValue: number,
@@ -61,7 +69,7 @@ export const connectMetaMask = async (
   const chainId =
     (await ethereum?.request(etheruemMethods.REQUEST_CHAIN_ID)) || 0;
 
-  const chainInfo: INetwork = getChainInfo(chainId as number);
+  const chainInfo = getChainInfo(chainId as number);
 
   const connectionInfo: IConnectionInfo = {
     chain: chainInfo,
@@ -78,7 +86,7 @@ export const connectMetaMask = async (
   });
 
   ethereum.on("chainChanged", async (chain = 0) => {
-    const chainInfo: INetwork = getChainInfo(chain as number);
+    const chainInfo = getChainInfo(chain as number);
     const balanceValue = await getBalance(account);
 
     connectionInfo.chain = chainInfo;
