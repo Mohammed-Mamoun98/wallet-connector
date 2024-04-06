@@ -1,4 +1,5 @@
 import { mainnet as viemMainnet } from "viem/chains";
+
 import { createWeb3Modal, defaultConfig } from "@web3modal/ethers";
 import { walletConnectProjectId } from "../apiKeys";
 import { IConnector } from "../../types/connector";
@@ -9,10 +10,12 @@ import {
   createWalletClient,
   custom,
   formatEther,
+  http,
 } from "viem";
-import { getChainInfo } from "../../services/wallets/mm";
+import { getChainInfo, getViemChain } from "../../services/wallets/mm";
 import { IBalance, IConnectionInfo } from "../../state/types/wallet";
 import EthereumProvider from "@walletconnect/ethereum-provider";
+import { etheruemMethods } from "../../services/wallets/etheruemMethods";
 
 export const mainnet = {
   chainId: 1,
@@ -41,14 +44,16 @@ export const walletConnectConnector: IConnector<Promise<EthereumProvider>> = {
   connect: async function (onConnected) {
     // @ts-ignore
     const provider = await this.getProvider();
+    await provider.enable();
 
+    // const currentChain = await this?.getChain?.();
     const client = createWalletClient({
-      chain: viemMainnet,
+      chain: getViemChain(1),
       transport: custom(provider),
     });
 
     // skip showing modal in case wallet was previously connected
-    if (!provider.accounts?.length) await provider?.connect();
+    // if (!provider.accounts?.length) await provider?.connect();
 
     const [account] = await client.getAddresses();
 
@@ -87,16 +92,58 @@ export const walletConnectConnector: IConnector<Promise<EthereumProvider>> = {
     const provider = await this.getProvider();
     return provider.disconnect();
   },
-  getAccount: async () => "",
-  getBalance: async () => {
-    return { decimals: 18, symbol: "", value: 1 };
+  getAccount: async function () {
+    const provider = await this.getProvider();
+    const account = await provider.request({
+      method: etheruemMethods.REQUEST_CHAIN_ID as any,
+    });
+    return account as string;
   },
-  getChain: async () => {
-    return ethereumNetworks?.[1];
+  getBalance: async function (account, chainId: number) {
+    const chainInfo = getChainInfo(chainId);
+    const viemChain = getViemChain(chainId);
+
+    const client = createPublicClient({
+      transport: http(),
+      chain: viemChain,
+    });
+    const balanceValue = await client.getBalance({
+      address: account as any,
+    });
+    const balanceInEth = formatEther(balanceValue);
+    const balanceCurrency = chainInfo.nativeCurrency.symbol;
+
+    const balance: IBalance = {
+      value: balanceInEth,
+      symbol: balanceCurrency,
+      decimals: chainInfo.nativeCurrency.decimals,
+    };
+    return balance;
+  },
+  getChain: async function () {
+    try {
+      const provider = await this.getProvider();
+      const chain = await provider.request({
+        method: etheruemMethods.REQUEST_CHAIN_ID as any,
+      });
+
+      const client = createWalletClient({
+        chain: viemMainnet,
+        transport: custom(provider!),
+      });
+      // client.c
+      alert("new chain to connect" + +chain!);
+      const chainInfo = getChainInfo(+chain! as number);
+      return chainInfo;
+    } catch (error) {
+      console.log({ error });
+      return getChainInfo(1);
+    }
   },
   getProvider: () =>
     EthereumProvider.init({
       chains: [1],
+      // optionalChains: [1, 56],
       projectId: walletConnectProjectId as string,
       showQrModal: true,
     }),
@@ -104,30 +151,31 @@ export const walletConnectConnector: IConnector<Promise<EthereumProvider>> = {
   addListeners: async function (listeners) {
     // @ts-ignore
     const provider = await this.getProvider();
+    console.log("listeners added!");
+
     if (!provider) return;
 
     provider.on("accountsChanged", async (wallets: string[]) => {
       if (!Array.isArray(wallets)) return;
       const account = wallets[0];
       listeners?.onAccountChanged?.(wallets[0]);
-      console.log("new account" + wallets[0]);
+      alert("new account" + wallets[0]);
 
       const chain = await this?.getChain?.();
-      const newBalance = await this?.getBalance?.(
-        account,
-        chain?.chainId as number
-      );
+      const newBalance = await this?.getBalance?.(account, chain?.id as number);
       if (newBalance) listeners.onBalanceChanged?.(newBalance);
     });
 
     provider.on("chainChanged", async (chain) => {
       const chainInfo = getChainInfo(+chain);
-      console.log("new chain" + chain);
+      // const newChain = await this.getChain?.();
+      // console.log({ NEW: newChain, fromCallback: chain });
 
       listeners?.onChainChanged?.(chainInfo);
       const account = (await this.getAccount?.()) || "";
+      console.log({ new: 1, account, chain, chainInfo });
 
-      const newBalance = await this?.getBalance?.(account, +chain);
+      const newBalance = await this?.getBalance?.(account, +chainInfo?.id!);
       if (newBalance) listeners.onBalanceChanged?.(newBalance);
     });
   },
