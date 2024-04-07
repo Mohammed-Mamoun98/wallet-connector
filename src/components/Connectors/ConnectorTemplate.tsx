@@ -6,7 +6,6 @@ export default function ConnectorTemplate({ img, connector }: IUiConnector) {
   const [walletConnection] = useWalletConnection({
     connector,
   });
-  if (connector.name === "metamask") console.log({ ...walletConnection });
 
   const hanldeConnection = async () => {
     walletConnection.hanldeConnection();

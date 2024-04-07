@@ -168,12 +168,9 @@ export const walletConnectConnector: IConnector<Promise<EthereumProvider>> = {
 
     provider.on("chainChanged", async (chain) => {
       const chainInfo = getChainInfo(+chain);
-      // const newChain = await this.getChain?.();
-      // console.log({ NEW: newChain, fromCallback: chain });
 
       listeners?.onChainChanged?.(chainInfo);
       const account = (await this.getAccount?.()) || "";
-      console.log({ new: 1, account, chain, chainInfo });
 
       const newBalance = await this?.getBalance?.(account, +chainInfo?.id!);
       if (newBalance) listeners.onBalanceChanged?.(newBalance);
