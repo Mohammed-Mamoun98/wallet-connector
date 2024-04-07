@@ -17,6 +17,14 @@ import { getChainInfo, getViemChain } from "../networks";
 
 const ethereum = window.ethereum;
 
+const errorCodeMap: Record<
+  number,
+  (chainId: number, client: WalletClient) => Promise<any>
+> = {
+  4902: (chainId: number, client: WalletClient) =>
+    client.addChain({ chain: getViemChain(chainId) }),
+};
+
 export const metamaskConnector: IConnector<SDKProvider> = {
   name: "MetaMask",
   connect: async function (onConnected) {
@@ -87,9 +95,17 @@ export const metamaskConnector: IConnector<SDKProvider> = {
         });
     });
   },
-  switchChain: (chainId: number) => {
+  switchChain: async function (chainId: number) {
     const client = (window as any).client as WalletClient;
-    return client.switchChain({ id: chainId });
+    try {
+      await client.switchChain({ id: chainId });
+    } catch (error: any) {
+      const code = error.code;
+      const errorHandler = errorCodeMap?.[code];
+      return errorHandler?.(chainId, client).then(() =>
+        this?.switchChain?.(chainId)
+      );
+    }
   },
 
   getBalance: async (account, chainId) => {

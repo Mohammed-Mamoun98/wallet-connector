@@ -78,8 +78,8 @@ export const CHAINS: IChains = {
   },
 };
 
-export const mapToFitViem = (network: INetwork | null): ViemChain  => {
-  if(!network) throw new Error("Unsupported Network")
+export const mapToFitViem = (network: INetwork | null): ViemChain => {
+  if (!network) throw new Error("Unsupported Network");
   return {
     ...network,
     id: +network?.id,
@@ -238,7 +238,7 @@ export const ethereumNetworks: INetworks = {
       symbol: "OETH",
       decimals: 18,
     },
-    rpcUrls: ["https://mainnet.optimism.io/"],
+    rpcUrls: ["https://optimism.llamarpc.com"],
     blockExplorerUrls: ["https://optimistic.etherscan.io"],
     iconUrl: "https://cryptologos.cc/logos/optimism-ethereum-op-logo.svg?v=029",
   },
@@ -1141,7 +1141,7 @@ export const ethereumNetworks: INetworks = {
       symbol: "FTM",
       decimals: 18,
     },
-    rpcUrls: ["https://rpc.ftm.tools"],
+    rpcUrls: ["https://rpc3.fantom.network"],
     blockExplorerUrls: ["https://ftmscan.com"],
     iconUrl: "https://cryptologos.cc/logos/fantom-ftm-logo.png?v=029",
   },
@@ -2138,6 +2138,7 @@ export const ethereumNetworks: INetworks = {
       decimals: 18,
     },
     rpcUrls: [
+      "https://arbitrum.llamarpc.com",
       `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
       `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
       "https://arb1.arbitrum.io/rpc",
