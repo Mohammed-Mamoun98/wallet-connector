@@ -3,7 +3,7 @@ import { mainnet as viemMainnet } from "viem/chains";
 import { createWeb3Modal, defaultConfig } from "@web3modal/ethers";
 import { walletConnectProjectId } from "../apiKeys";
 import { IConnector } from "../../types/connector";
-import { ethereumNetworks } from "../networks";
+import { ethereumNetworks, getChainInfo, getViemChain } from "../networks";
 import {
   createClient,
   createPublicClient,
@@ -12,7 +12,6 @@ import {
   formatEther,
   http,
 } from "viem";
-import { getChainInfo, getViemChain } from "../../services/wallets/mm";
 import { IBalance, IConnectionInfo } from "../../state/types/wallet";
 import EthereumProvider from "@walletconnect/ethereum-provider";
 import { etheruemMethods } from "../../services/wallets/etheruemMethods";

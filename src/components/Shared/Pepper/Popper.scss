@@ -1,0 +1,27 @@
+@keyframes slide-up {
+  from {
+    transform: translateY(10%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+.inline-popper-wrapper {
+  width: fit-content;
+  position: relative;
+  .popper-content-wrapper {
+    width: 100%;
+    .popper-content {
+      width: fit-content;
+      border-radius: 24px;
+      background: var(--modal-body-color, var(--_modal-body-color));
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      animation: slide-up 0.7s cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+  }
+}

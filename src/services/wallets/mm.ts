@@ -8,6 +8,7 @@ import {
   INetwork,
   INetworkWithIcon,
   ethereumNetworks,
+  getChainInfo,
   mapToFitViem,
 } from "../../constants/networks";
 import { etheruemMethods } from "./etheruemMethods";
@@ -33,17 +34,6 @@ export const getBalance = async (account: string) => {
   balance = newDisplayFloats(+balance, 3).toString();
   return +balance;
 };
-
-const addIconUrl = (chain: INetwork): INetworkWithIcon => {
-  const chainIconUrl = CHAINS?.[chain.nativeCurrency.symbol]?.iconUrl;
-  return { ...chain, iconUrl: chainIconUrl };
-};
-
-export const getChainInfo = (chainId: number): INetwork =>
-  addIconUrl(ethereumNetworks[+chainId]);
-
-export const getViemChain = (chainId: number): Chain =>
-  mapToFitViem(ethereumNetworks[+chainId]);
 
 export const getBalanceInfo = (
   balanceValue: number,

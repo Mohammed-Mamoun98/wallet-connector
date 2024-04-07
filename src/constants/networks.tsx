@@ -12,9 +12,9 @@ export interface INetwork {
   rpcUrls: Array<string>;
   blockExplorerUrls: Array<string>;
   scanName?: string;
+  iconUrl?: string;
 }
 export interface INetworkWithIcon extends INetwork {
-  iconUrl?: string;
   icon?: JSX.Element;
 }
 
@@ -59,7 +59,7 @@ export const CHAINS: IChains = {
     symbol: "ETH",
     iconUrl: "https://hpool-nfts-production.s3.amazonaws.com/Ethereum_32.svg",
   },
-  BSC: {
+  BNB: {
     mainnet: 56, // bsc mainnet
     testnet: 97, // bsc testnet
     name: "Binance",
@@ -78,16 +78,31 @@ export const CHAINS: IChains = {
   },
 };
 
-export const mapToFitViem = (network: INetwork): ViemChain => ({
-  ...network,
-  id: +network.id,
-  name: network.chainName,
-  rpcUrls: {
-    default: {
-      http: [...network.rpcUrls],
+export const mapToFitViem = (network: INetwork | null): ViemChain  => {
+  if(!network) throw new Error("Unsupported Network")
+  return {
+    ...network,
+    id: +network?.id,
+    name: network?.chainName,
+    rpcUrls: {
+      default: {
+        http: [...network?.rpcUrls],
+      },
     },
-  },
-});
+  };
+};
+
+const addIconUrl = (chain: INetwork): INetworkWithIcon => {
+  const chainIconUrl = CHAINS?.[chain.nativeCurrency.symbol]?.iconUrl;
+  console.log({ __: chain, chainIconUrl, aa: chain.nativeCurrency.symbol });
+  return { ...chain, iconUrl: chainIconUrl };
+};
+
+export const getChainInfo = (chainId: number): INetwork =>
+  ethereumNetworks[+chainId];
+
+export const getViemChain = (chainId: number) =>
+  mapToFitViem(ethereumNetworks[+chainId]);
 
 export const ethereumNetworks: INetworks = {
   1: {
@@ -106,6 +121,8 @@ export const ethereumNetworks: INetworks = {
       "https://cloudflare-eth.com",
     ],
     blockExplorerUrls: ["https://etherscan.io"],
+    iconUrl:
+      "https://cryptologos.cc/logos/versions/ethereum-eth-logo-diamond-purple.svg?v=029",
   },
   2: {
     id: "0x2",
@@ -117,6 +134,8 @@ export const ethereumNetworks: INetworks = {
     },
     rpcUrls: ["https://node.expanse.tech"],
     blockExplorerUrls: [],
+    iconUrl:
+      "https://cryptologos.cc/logos/versions/ethereum-eth-logo-diamond-purple.svg?v=029",
   },
   3: {
     id: "0x3",
@@ -130,6 +149,8 @@ export const ethereumNetworks: INetworks = {
       `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`,
       `wss://ropsten.infura.io/ws/v3/${process.env.INFURA_API_KEY}`,
     ],
+    iconUrl:
+      "https://cryptologos.cc/logos/versions/ethereum-eth-logo-diamond-purple.svg?v=029",
     blockExplorerUrls: ["https://ropsten.etherscan.io"],
   },
   4: {
@@ -145,6 +166,8 @@ export const ethereumNetworks: INetworks = {
       `wss://rinkeby.infura.io/ws/v3/${process.env.INFURA_API_KEY}`,
     ],
     blockExplorerUrls: ["https://rinkeby.etherscan.io"],
+    iconUrl:
+      "https://cryptologos.cc/logos/versions/ethereum-eth-logo-diamond-purple.svg?v=029",
   },
   5: {
     id: "0x5",
@@ -160,6 +183,8 @@ export const ethereumNetworks: INetworks = {
       "https://goerli.prylabs.net/",
     ],
     blockExplorerUrls: ["https://goerli.etherscan.io/"],
+    iconUrl:
+      "https://cryptologos.cc/logos/versions/ethereum-eth-logo-diamond-purple.svg?v=029",
   },
   6: {
     id: "0x6",
@@ -215,6 +240,7 @@ export const ethereumNetworks: INetworks = {
     },
     rpcUrls: ["https://mainnet.optimism.io/"],
     blockExplorerUrls: ["https://optimistic.etherscan.io"],
+    iconUrl: "https://cryptologos.cc/logos/optimism-ethereum-op-logo.svg?v=029",
   },
   11: {
     id: "0xb",
@@ -561,6 +587,7 @@ export const ethereumNetworks: INetworks = {
       "wss://bsc-ws-node.nariox.org",
     ],
     blockExplorerUrls: ["https://bscscan.com"],
+    iconUrl: "https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=001",
   },
   58: {
     id: "0x3a",
@@ -830,6 +857,7 @@ export const ethereumNetworks: INetworks = {
       "https://data-seed-prebsc-2-s3.binance.org:8545",
     ],
     blockExplorerUrls: ["https://testnet.bscscan.com"],
+    iconUrl: "https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=001",
   },
   99: {
     id: "0x63",
@@ -1008,6 +1036,7 @@ export const ethereumNetworks: INetworks = {
       "https://matic-mainnet.chainstacklabs.com",
     ],
     blockExplorerUrls: ["https://polygonscan.com"],
+    iconUrl: "https://cryptologos.cc/logos/polygon-matic-logo.svg?v=029",
   },
   142: {
     id: "0x8e",
@@ -1077,6 +1106,7 @@ export const ethereumNetworks: INetworks = {
     },
     rpcUrls: ["https://arbitrum.xdaichain.com/"],
     blockExplorerUrls: ["https://blockscout.com/xdai/arbitrum"],
+    iconUrl: "https://hord-prod-users.s3.amazonaws.com/arbitrum_18_18.png",
   },
   211: {
     id: "0xd3",
@@ -1113,6 +1143,7 @@ export const ethereumNetworks: INetworks = {
     },
     rpcUrls: ["https://rpc.ftm.tools"],
     blockExplorerUrls: ["https://ftmscan.com"],
+    iconUrl: "https://cryptologos.cc/logos/fantom-ftm-logo.png?v=029",
   },
   256: {
     id: "0x100",
@@ -1275,6 +1306,7 @@ export const ethereumNetworks: INetworks = {
     },
     rpcUrls: ["https://goerli.optimism.io/"],
     blockExplorerUrls: ["https://goerli-optimism.etherscan.io/"],
+    iconUrl: "https://cryptologos.cc/logos/optimism-ethereum-op-logo.svg?v=029",
   },
   499: {
     id: "0x1f3",
@@ -1759,6 +1791,7 @@ export const ethereumNetworks: INetworks = {
     },
     rpcUrls: ["https://rpc.testnet.fantom.network"],
     blockExplorerUrls: ["https://testnet.ftmscan.com/"],
+    iconUrl: "https://cryptologos.cc/logos/fantom-ftm-logo.svg?v=029",
   },
   4689: {
     id: "0x1251",
@@ -2111,6 +2144,7 @@ export const ethereumNetworks: INetworks = {
       "wss://arb1.arbitrum.io/ws",
     ],
     blockExplorerUrls: ["https://arbiscan.io", "https://explorer.arbitrum.io"],
+    iconUrl: "https://cryptologos.cc/logos/arbitrum-arb-logo.png?v=029",
   },
   42220: {
     id: "0xa4ec",
@@ -2144,6 +2178,7 @@ export const ethereumNetworks: INetworks = {
     },
     rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
     blockExplorerUrls: ["https://testnet.snowtrace.io/"],
+    iconUrl: "https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=029",
   },
   43114: {
     id: "0xa86a",
@@ -2155,6 +2190,7 @@ export const ethereumNetworks: INetworks = {
     },
     rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
     blockExplorerUrls: ["https://cchain.explorer.avax.network"],
+    iconUrl: "https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=029",
   },
   44787: {
     id: "0xaef3",
@@ -2531,6 +2567,7 @@ export const ethereumNetworks: INetworks = {
       "wss://rinkeby.arbitrum.io/ws",
     ],
     blockExplorerUrls: ["https://rinkeby-explorer.arbitrum.io"],
+    iconUrl: "https://hord-prod-users.s3.amazonaws.com/arbitrum_18_18.png",
   },
   421613: {
     id: "0x66eed",
@@ -2542,6 +2579,7 @@ export const ethereumNetworks: INetworks = {
     },
     rpcUrls: ["https://goerli-rollup.arbitrum.io/rpc"],
     blockExplorerUrls: ["https://goerli.arbiscan.io/"],
+    iconUrl: "https://cryptologos.cc/logos/arbitrum-arb-logo.png?v=029",
   },
   11155111: {
     id: "0xaa36a7",

@@ -13,4 +13,5 @@ export interface IConnector<Type = any> {
   disconnect?: () => void;
   getBalance?: (account: string, chainId: number) => Promise<IBalance>;
   autoConnect?: boolean;
+  switchChain?: (chainId: number) => void;
 }

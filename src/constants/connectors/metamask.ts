@@ -1,4 +1,5 @@
 import {
+  WalletClient,
   createClient,
   createPublicClient,
   createWalletClient,
@@ -8,11 +9,11 @@ import {
 } from "viem";
 import { mainnet } from "viem/chains";
 import { IConnector } from "../../types/connector";
-import { getChainInfo, getViemChain } from "../../services/wallets/mm";
 import { IBalance, IConnectionInfo } from "../../state/types/wallet";
 import EthereumProvider from "@walletconnect/ethereum-provider/dist/types/EthereumProvider";
 import { SDKProvider } from "@metamask/sdk";
 import { etheruemMethods } from "../../services/wallets/etheruemMethods";
+import { getChainInfo, getViemChain } from "../networks";
 
 const ethereum = window.ethereum;
 
@@ -20,6 +21,9 @@ export const metamaskConnector: IConnector<SDKProvider> = {
   name: "metamask",
   connect: function (onConnected) {
     const provider = this.getProvider();
+
+    // @ts-ignore
+    window.connector = this;
 
     // @ts-ignore
     window.provider = provider;
@@ -38,12 +42,17 @@ export const metamaskConnector: IConnector<SDKProvider> = {
       transport: custom(ethereum!),
     });
 
+    // @ts-ignore
+    window.client = client;
+
     client.requestAddresses().then(async (addresses) => {
       const account = addresses?.[0];
 
       const chainId = await client.getChainId();
       const chainInfo = getChainInfo(chainId);
       const viemChain = getViemChain(chainId);
+
+      if (!viemChain) throw new Error("Unsupported Network");
 
       const publicClient = createPublicClient({
         chain: viemChain,
@@ -68,6 +77,10 @@ export const metamaskConnector: IConnector<SDKProvider> = {
       onConnected(connectionInfo);
       return;
     });
+  },
+  switchChain: (chainId: number) => {
+    const client = (window as any).client as WalletClient;
+    return client.switchChain({ id: chainId });
   },
 
   getBalance: async (account, chainId) => {
