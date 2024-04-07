@@ -5,7 +5,7 @@ import { EthereumProvider } from "@walletconnect/ethereum-provider";
 
 export interface IConnector<Type = any> {
   name: string;
-  connect: (onConnected: (connectionInfo: IConnectionInfo) => any) => any;
+  connect: (onConnected: (connectionInfo: IConnectionInfo) => any) => Promise<IConnectionInfo>;
   getChain?: () => Promise<INetwork>;
   getAccount?: () => Promise<string>;
   getProvider: () => Type;

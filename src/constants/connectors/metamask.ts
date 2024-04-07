@@ -18,64 +18,73 @@ import { getChainInfo, getViemChain } from "../networks";
 const ethereum = window.ethereum;
 
 export const metamaskConnector: IConnector<SDKProvider> = {
-  name: "metamask",
-  connect: function (onConnected) {
-    const provider = this.getProvider();
+  name: "MetaMask",
+  connect: async function (onConnected) {
+    return new Promise((res, rej) => {
+      const provider = this.getProvider();
 
-    // @ts-ignore
-    window.connector = this;
+      // @ts-ignore
+      window.connector = this;
 
-    // @ts-ignore
-    window.provider = provider;
+      // @ts-ignore
+      window.provider = provider;
 
-    // handle mobile browsers or devices that don't have metamask installed
-    if (!provider) {
-      window.open(
-        `https://metamask.app.link/dapp/${process.env.REACT_APP_WALLET_APP_LINK}`
-      );
-      console.warn("please install metamask");
-      return null;
-    }
+      // handle mobile browsers or devices that don't have metamask installed
+      if (!provider) {
+        window.open(
+          `https://metamask.app.link/dapp/${process.env.REACT_APP_WALLET_APP_LINK}`
+        );
+        console.warn("please install metamask");
+        return null;
+      }
 
-    const client = createWalletClient({
-      chain: mainnet,
-      transport: custom(ethereum!),
-    });
-
-    // @ts-ignore
-    window.client = client;
-
-    client.requestAddresses().then(async (addresses) => {
-      const account = addresses?.[0];
-
-      const chainId = await client.getChainId();
-      const chainInfo = getChainInfo(chainId);
-      const viemChain = getViemChain(chainId);
-
-      if (!viemChain) throw new Error("Unsupported Network");
-
-      const publicClient = createPublicClient({
-        chain: viemChain,
-        transport: http(),
+      const client = createWalletClient({
+        chain: mainnet,
+        transport: custom(ethereum!),
       });
 
-      const balanceValue = await publicClient.getBalance({ address: account });
-      const balanceInEth = formatEther(balanceValue);
-      const balanceCurrency = chainInfo.nativeCurrency.symbol;
+      // @ts-ignore
+      window.client = client;
 
-      const balance: IBalance = {
-        value: balanceInEth,
-        symbol: balanceCurrency,
-        decimals: chainInfo.nativeCurrency.decimals,
-      };
+      client
+        .requestAddresses()
+        .then(async (addresses) => {
+          const account = addresses?.[0];
 
-      const connectionInfo: IConnectionInfo = {
-        account,
-        balance,
-        chain: chainInfo,
-      };
-      onConnected(connectionInfo);
-      return;
+          const chainId = await client.getChainId();
+          const chainInfo = getChainInfo(chainId);
+          const viemChain = getViemChain(chainId);
+
+          if (!viemChain) throw new Error("Unsupported Network");
+
+          const publicClient = createPublicClient({
+            chain: viemChain,
+            transport: http(),
+          });
+
+          const balanceValue = await publicClient.getBalance({
+            address: account,
+          });
+          const balanceInEth = formatEther(balanceValue);
+          const balanceCurrency = chainInfo.nativeCurrency.symbol;
+
+          const balance: IBalance = {
+            value: balanceInEth,
+            symbol: balanceCurrency,
+            decimals: chainInfo.nativeCurrency.decimals,
+          };
+
+          const connectionInfo: IConnectionInfo = {
+            account,
+            balance,
+            chain: chainInfo,
+          };
+          onConnected(connectionInfo);
+          res(connectionInfo);
+        })
+        .catch((err) => {
+          rej(err);
+        });
     });
   },
   switchChain: (chainId: number) => {

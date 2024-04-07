@@ -39,53 +39,62 @@ export const ethersConfig = defaultConfig({
 });
 
 export const walletConnectConnector: IConnector<Promise<EthereumProvider>> = {
-  name: "walletConnect",
+  name: "WalletConnect",
   connect: async function (onConnected) {
-    // @ts-ignore
-    const provider = await this.getProvider();
-    await provider.enable();
+    return new Promise(async (res, rej) => {
+      try {
+        // @ts-ignore
+        const provider = await this.getProvider();
+        await provider.enable();
 
-    // const currentChain = await this?.getChain?.();
-    const client = createWalletClient({
-      chain: getViemChain(1),
-      transport: custom(provider),
+        // const currentChain = await this?.getChain?.();
+        const client = createWalletClient({
+          chain: getViemChain(1),
+          transport: custom(provider),
+        });
+
+        // skip showing modal in case wallet was previously connected
+        // if (!provider.accounts?.length) await provider?.connect();
+
+        const [account] = await client.getAddresses();
+
+        // store provider in window for usage
+        // @ts-ignore
+        window.provider = provider;
+
+        if (!account) throw new Error("wallet connection failed");
+
+        const publicClient = createPublicClient({
+          chain: viemMainnet,
+          transport: custom(provider!),
+        });
+
+        const chainId = await client.getChainId();
+        const chainInfo = getChainInfo(chainId);
+
+        const balanceValue = await publicClient.getBalance({
+          address: account,
+        });
+        const balanceInEth = formatEther(balanceValue);
+        const balanceCurrency = chainInfo.nativeCurrency.symbol;
+
+        const balance: IBalance = {
+          value: balanceInEth,
+          symbol: balanceCurrency,
+          decimals: chainInfo.nativeCurrency.decimals,
+        };
+
+        const connectionInfo: IConnectionInfo = {
+          account,
+          balance,
+          chain: chainInfo,
+        };
+        onConnected(connectionInfo);
+        res(connectionInfo);
+      } catch (err) {
+        rej(err);
+      }
     });
-
-    // skip showing modal in case wallet was previously connected
-    // if (!provider.accounts?.length) await provider?.connect();
-
-    const [account] = await client.getAddresses();
-
-    // store provider in window for usage
-    // @ts-ignore
-    window.provider = provider;
-
-    if (!account) throw new Error("wallet connection failed");
-
-    const publicClient = createPublicClient({
-      chain: viemMainnet,
-      transport: custom(provider!),
-    });
-
-    const chainId = await client.getChainId();
-    const chainInfo = getChainInfo(chainId);
-
-    const balanceValue = await publicClient.getBalance({ address: account });
-    const balanceInEth = formatEther(balanceValue);
-    const balanceCurrency = chainInfo.nativeCurrency.symbol;
-
-    const balance: IBalance = {
-      value: balanceInEth,
-      symbol: balanceCurrency,
-      decimals: chainInfo.nativeCurrency.decimals,
-    };
-
-    const connectionInfo: IConnectionInfo = {
-      account,
-      balance,
-      chain: chainInfo,
-    };
-    onConnected(connectionInfo);
   },
   disconnect: async function () {
     const provider = await this.getProvider();
