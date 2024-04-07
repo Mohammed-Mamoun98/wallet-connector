@@ -13,6 +13,10 @@ export interface INetwork {
   blockExplorerUrls: Array<string>;
   scanName?: string;
 }
+export interface INetworkWithIcon extends INetwork {
+  iconUrl?: string;
+  icon?: JSX.Element;
+}
 
 export interface Chain {
   id: string | number;
@@ -44,7 +48,7 @@ export interface ISupportedNetworks {
   [BlockchainType: string]: INetworks;
 }
 
-export type IChains = Record<CHIAN, IChainInfo>;
+export type IChains = Record<string, IChainInfo>;
 
 export const CHAINS: IChains = {
   ETH: {
@@ -74,20 +78,16 @@ export const CHAINS: IChains = {
   },
 };
 
-export const mapToFitViem = (network: INetwork): ViemChain => {
-  console.log({ __:network });
-
-  return {
-    ...network,
-    id: +network.id,
-    name: network.chainName,
-    rpcUrls: {
-      default: {
-        http: [...network.rpcUrls],
-      },
+export const mapToFitViem = (network: INetwork): ViemChain => ({
+  ...network,
+  id: +network.id,
+  name: network.chainName,
+  rpcUrls: {
+    default: {
+      http: [...network.rpcUrls],
     },
-  };
-};
+  },
+});
 
 export const ethereumNetworks: INetworks = {
   1: {

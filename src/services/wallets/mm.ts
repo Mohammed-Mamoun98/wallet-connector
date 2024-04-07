@@ -4,7 +4,9 @@ import { IBalance, IChian, IConnectionInfo } from "../../state/types/wallet";
 import { fromWeiToEth } from "../../utils/web3";
 import { newDisplayFloats } from "../../utils/format";
 import {
+  CHAINS,
   INetwork,
+  INetworkWithIcon,
   ethereumNetworks,
   mapToFitViem,
 } from "../../constants/networks";
@@ -32,8 +34,13 @@ export const getBalance = async (account: string) => {
   return +balance;
 };
 
+const addIconUrl = (chain: INetwork): INetworkWithIcon => {
+  const chainIconUrl = CHAINS?.[chain.nativeCurrency.symbol]?.iconUrl;
+  return { ...chain, iconUrl: chainIconUrl };
+};
+
 export const getChainInfo = (chainId: number): INetwork =>
-  ethereumNetworks[+chainId];
+  addIconUrl(ethereumNetworks[+chainId]);
 
 export const getViemChain = (chainId: number): Chain =>
   mapToFitViem(ethereumNetworks[+chainId]);
@@ -52,7 +59,7 @@ export const connectMetaMask = async (
 ): Promise<IConnectionInfo | null> => {
   if (!ethereum) {
     window.open(
-      "https://metamask.app.link/dapp/wallet-connector-six.vercel.app/"
+      `https://metamask.app.link/dapp/${process.env.REACT_APP_WALLET_APP_LINK}/`
     );
 
     return null;
