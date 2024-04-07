@@ -10,6 +10,7 @@ import { usePromise } from "../usePromise/usePromise";
 import { IRequestState } from "../../state/types/requestState";
 import { retrieveFromLs } from "../../utils/localstorage";
 import { connectorsList } from "../../constants/connectors/list";
+import { useModalStore } from "src/state/stores/modalState";
 
 interface IUseWalletConnection extends IConnectionInfo {
   hanldeConnection: () => void;
@@ -40,6 +41,8 @@ export default function useWalletConnection({
     setBalance,
   } = useWalletStore((state) => state);
 
+  const { closeModal } = useModalStore();
+
   const handleConnectionSuccess = useCallback(
     (res: IConnectionInfo | null) => {
       if (!res) return;
@@ -53,23 +56,25 @@ export default function useWalletConnection({
   const hanldeConnection = useCallback(async () => {
     if (!connector) return;
 
-    connector.connect((connectionInfo) => {
-      storeConnectionType(connector.name);
+    connector
+      .connect((connectionInfo) => {
+        storeConnectionType(connector.name);
 
-      handleConnectionSuccess(connectionInfo);
-      connector.addListeners({
-        onAccountChanged: (newAccount) => {
-          setAccount(newAccount as string);
-        },
-        onBalanceChanged: (newBalance) => {
-          setBalance(newBalance);
-        },
-        onChainChanged: (newChain) => {
-          console.log("onChainChanged", newChain);
-          setChain(newChain);
-        },
-      });
-    });
+        handleConnectionSuccess(connectionInfo);
+        connector.addListeners({
+          onAccountChanged: (newAccount) => {
+            setAccount(newAccount as string);
+          },
+          onBalanceChanged: (newBalance) => {
+            setBalance(newBalance);
+          },
+          onChainChanged: (newChain) => {
+            console.log("onChainChanged", newChain);
+            setChain(newChain);
+          },
+        });
+      })
+      .finally(closeModal);
   }, [connector?.name]);
 
   const handleDisconect = () => {

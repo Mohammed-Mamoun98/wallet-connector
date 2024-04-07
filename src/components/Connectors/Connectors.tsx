@@ -6,7 +6,7 @@ import ConnectionPreserver from "../ConnectionPreserver/ConnectionPreserver";
 
 export default function Connectors() {
   return (
-    <div className="mt-5 flex items-center flex-col max-[100%] overflow-scroll">
+    <div className="max-[100%] overflow-scroll">
       <ConnectionPreserver />
 
       <div className="mt-5">

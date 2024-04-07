@@ -1,19 +1,24 @@
 import React from "react";
 import { useWalletStore } from "../../state/stores/walletState";
-import ConnectedContent from "../ConnectedContent/ConnectedContent";
+import { useModalStore } from "src/state/stores/modalState";
+import ConnectWalletModal from "./ConnectWalletModal/ConnectWalletModal";
 
 export default function ConnectBtn() {
   const { account } = useWalletStore();
+  const { openModal } = useModalStore();
+
+  const openConnectionModal = () => {
+    openModal({ modalContent: <ConnectWalletModal /> });
+  };
+
+  if (account) return <></>;
 
   return (
-    <div className="flex ml-auto border-gray-300 border-spacing-1 text-white">
-      {account ? (
-        <ConnectedContent />
-      ) : (
-        <div className="bg-cyan-400 hover:bg-cyan-300 p-2 rounded-lg cursor-pointer">
-          Connect
-        </div>
-      )}
+    <div
+      onClick={openConnectionModal}
+      className="text-white ml-auto bg-[#17BD3B] hover:bg-[#3CE461] p-2 rounded-[12px] cursor-pointer"
+    >
+      Connect
     </div>
   );
 }
