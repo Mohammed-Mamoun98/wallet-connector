@@ -1,0 +1,1 @@
+export const secondaryFontColor = "opacity-60  text-[#EBEBF5]"

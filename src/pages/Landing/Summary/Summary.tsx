@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Summary() {
   return (
-    <div className="mt-[48px] font-[20px]">
+    <div className="font-[20px]">
       <span className="text-white ">
         Hi, I’m Mo, a frontend developer with a passion for efficient code and
         clean sites.

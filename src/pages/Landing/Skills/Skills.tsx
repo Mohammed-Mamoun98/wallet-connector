@@ -6,7 +6,7 @@ export default function Skills({ icon, skills, title }: ISkillList) {
     <div className="">
       <div className="flex gap-2">
         {icon}
-        <span className="font-normal opacity-60 text-[14px] text-[#EBEBF5]">
+        <span className="font-normal text-[14px] opacity-60  text-[#EBEBF5]">
           {title}
         </span>
       </div>
