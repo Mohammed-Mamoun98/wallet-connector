@@ -9,8 +9,8 @@ export default function Summary() {
       </span>
       <span className="text-[#EBEBF5] opacity-60">
         {" "}
-        In 2021 I found my focus in web3. Most notably, I served as the lead
-        frontend developer for Hord, an Ethereum Staking platform, managing
+        In 2021 I found my focus in web3. Most notably, I served as a Senior
+        frontend engineer for Hord, an Ethereum Staking platform, managing
         assets exceeding $7M in Total Value Locked.
       </span>
     </div>

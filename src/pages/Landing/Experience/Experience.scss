@@ -1,0 +1,10 @@
+.experience-wrapper {
+  &:hover {
+    .show-at-hover {
+      opacity: 1;
+    }
+  }
+  .show-at-hover {
+    opacity: 0;
+  }
+}

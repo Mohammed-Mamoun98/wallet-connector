@@ -18,9 +18,9 @@ export default function ProfileGallery() {
             className="w-100 h-auto rounded-[27px]"
             alt="gallery-img"
           />
-          <div className="pb-1">
-            <span className="block px-6 mt-3 text-lg">{galleryImg.title}</span>
-            <span className={clsx("block px-6 text-sm", secondaryFontColor)}>
+          <div className="pb-1 px-4">
+            <span className="block mt-3 text-lg">{galleryImg.title}</span>
+            <span className={clsx("block text-sm", secondaryFontColor)}>
               {galleryImg.describtion}
             </span>
           </div>

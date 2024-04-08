@@ -8,7 +8,7 @@ import { secondaryFontColor } from "src/styles/tw-classes";
 export default function Recomandations() {
   return (
     <div>
-      <span className={clsx("text-[14px] block mb-3", secondaryFontColor)}>
+      <span className={clsx("text-sm block mb-2", secondaryFontColor)}>
         Recomandations
       </span>
       <div className="flex flex-col gap-[32px]">
