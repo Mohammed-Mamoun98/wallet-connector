@@ -1,10 +1,13 @@
 .experience-wrapper {
   &:hover {
     .show-at-hover {
-      opacity: 1;
+      display: block;
     }
   }
   .show-at-hover {
-    opacity: 0;
+    display: none;
+    &.force-show {
+      display: block;
+    }
   }
 }
