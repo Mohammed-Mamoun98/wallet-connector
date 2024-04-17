@@ -3,8 +3,6 @@ import { IExperience } from "./experiencesList";
 import { secondaryFontColor } from "src/styles/tw-classes";
 import { ReactComponent as ArrowDown } from "src/assets/svgs/expand-arrow-down.svg";
 import clsx from "clsx";
-import { useToggle } from "src/hooks/useToggle/useToggle";
-import Expandable from "src/components/Shared/Expandable/Expandable";
 import { useCollapse } from "react-collapsed";
 
 export default function Experience({
