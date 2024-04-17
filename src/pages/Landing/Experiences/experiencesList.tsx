@@ -9,7 +9,7 @@ export interface IExperience {
 
 export const experiencesList: IExperience[] = [
   {
-    company: "Hord",
+    company: "Dcentralab",
     position: "Senior Frontend Engineer",
     date: {
       from: 2021,

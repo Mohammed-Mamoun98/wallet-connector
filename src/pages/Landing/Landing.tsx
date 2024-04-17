@@ -7,7 +7,7 @@ import Skills from "./Skills/Skills";
 import { generalSkill, web3Skills } from "./Skills/skillsLists";
 import Recomandations from "./Recomandations/Recomandations";
 import ProfileGallery from "./ProfileGallery/ProfileGallery";
-import Experience from "./Experience/Experience";
+import Experiences from "./Experiences/Experiences";
 
 export default function Landing() {
   return (
@@ -17,7 +17,7 @@ export default function Landing() {
         <Summary />
         <Skills {...generalSkill} />
         <Skills {...web3Skills} />
-        <Experience />
+        <Experiences />
         <Recomandations />
         <ProfileGallery />
       </div>

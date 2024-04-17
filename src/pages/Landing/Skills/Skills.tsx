@@ -12,7 +12,7 @@ export default function Skills({ icon, skills, title }: ISkillList) {
       </div>
       <div className="mt-2 flex gap-2 flex-wrap">
         {skills.map((skill) => (
-          <div className="rounded-[12px] bg-[#252525] opacity-60 text-md  py-[5px] px-[10px]">{skill}</div>
+          <div key={skill} className="rounded-[12px] bg-[#252525] opacity-60 text-md  py-[5px] px-[10px]">{skill}</div>
         ))}
       </div>
     </div>

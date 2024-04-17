@@ -8,6 +8,7 @@ export default function ProfileGallery() {
     <div className="flex flex-col gap-4">
       {galleryImgsList.map((galleryImg) => (
         <a
+          key={galleryImg.describtion}
           href={galleryImg.link}
           target="_blank"
           rel="noreferrer"

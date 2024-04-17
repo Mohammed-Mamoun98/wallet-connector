@@ -14,31 +14,31 @@ export interface IGalleryImg {
 export const galleryImgsList: IGalleryImg[] = [
   {
     img: img3,
-    describtion: "Stake ETH app",
+    describtion: "Stake ETH",
     title:"Hord",
     link: "https://app.hord.fi",
   },
   {
     img: img1,
-    describtion: "Stake ETH app",
+    describtion: "Portfolio",
     title:"Hord",
     link: "https://app.hord.fi",
   },
   {
     img: img2,
-    describtion: "Stake ETH app",
+    describtion: "Validators",
     title:"Hord",
     link: "https://app.hord.fi",
   },
   {
     img: img4,
-    describtion: "Stake ETH app",
+    describtion: "Pool stats",
     title:"Hord",
     link: "https://app.hord.fi",
   },
   {
     img: img5,
-    describtion: "Stake ETH app",
+    describtion: "Transactions history",
     title:"Hord",
     link: "https://app.hord.fi",
   },
