@@ -25,7 +25,7 @@ export const infoLinks: ILink[] = [
   {
     name: "CV",
     icon: <WebsiteIcon />,
-    link: "https://online.fliphtml5.com/rdhno/nvzo",
+    link: "https://online.fliphtml5.com/rdhno/ypmf/",
   },
   {
     name: "modahmada2018@gmail.com",

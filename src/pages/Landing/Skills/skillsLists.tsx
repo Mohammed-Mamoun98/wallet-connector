@@ -13,8 +13,9 @@ export const generalSkill: ISkillList = {
   skills: [
     "React",
     "React Native",
-    "Node.js",
     "Next.js",
+    "Express.js",
+    "Mongo DB",
     "Typescript",
     "Javascript",
     "Redux",
