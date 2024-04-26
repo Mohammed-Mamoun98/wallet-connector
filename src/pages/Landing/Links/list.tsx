@@ -2,6 +2,8 @@ import { ReactComponent as LinkedInIcon } from "src/assets/svgs/icon_linkedin_16
 import { ReactComponent as GithubIcon } from "src/assets/svgs/icon_github_16.svg";
 import { ReactComponent as WebsiteIcon } from "src/assets/svgs/icon_website.svg";
 import { ReactComponent as EmailIcon } from "src/assets/svgs/icon_email.svg";
+import StackoverflowIcon from "src/assets/imgs/Stack_Overflow_icon.svg.png";
+import StackExchangeIcon from "src/assets/imgs/stack-exchange-icon.png";
 
 export interface ILink {
   icon: JSX.Element;
@@ -25,13 +27,28 @@ export const infoLinks: ILink[] = [
   {
     name: "CV",
     icon: <WebsiteIcon />,
-    link: "https://online.fliphtml5.com/rdhno/ypmf/",
+    link: "https://online.fliphtml5.com/rdhno/taia/",
+  },
+  {
+    name: "481",
+    icon: (
+      <img src={StackoverflowIcon} className="min-w-[24px] w-[24px] h-auto" />
+    ),
+    link: "https://stackoverflow.com/users/11052491/mohammed-alshaer",
+  },
+  {
+    name: "111",
+    icon: (
+      <img src={StackExchangeIcon} className="min-w-[24px] w-[24px] h-auto" />
+    ),
+    link: "https://ethereum.stackexchange.com/users/93101/mohammed-alshaer",
   },
   {
     name: "modahmada2018@gmail.com",
     icon: <EmailIcon />,
     link: "",
-    classname: "bg-[#fff] md:flex-grow text-[#26272B] w-[100%] md:w-[fit-content] flex-1",
+    classname:
+      "bg-[#fff] md:flex-grow text-[#26272B] w-[100%] md:w-[fit-content] flex-1",
     onClick: function () {
       navigator.clipboard.writeText("modahmada2018@gmail.com");
       alert("Email is copied to your clipboard :)");

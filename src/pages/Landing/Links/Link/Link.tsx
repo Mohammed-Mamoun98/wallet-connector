@@ -20,7 +20,7 @@ export default function Link({
   return (
     <a
       className={clsx(
-        "flex py-[8px] flex-1 md:flex-grow-0 px-[12px] gap-[8px] items-center bg-[#303030] rounded-[14px]",
+        "flex py-[8px] h-full  flex-1 md:flex-grow-0 px-[12px] gap-[8px] justify-center items-center bg-[#303030] rounded-[14px]",
         classname
       )}
       href={link}
