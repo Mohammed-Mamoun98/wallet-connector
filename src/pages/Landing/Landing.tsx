@@ -9,7 +9,7 @@ import "./Landing.scss";
 
 export default function Landing() {
   return (
-    <div className="bg-[#141414] text-white  flex flex-col flex-1 pt-6">
+    <div className=" text-white  flex flex-col flex-1 pt-6">
       <div className="lg:w-[620px] w-[90%] mx-auto flex-1 flex flex-col gap-10 pb-[100px]">
         <LandingHeader />
         <Summary />
