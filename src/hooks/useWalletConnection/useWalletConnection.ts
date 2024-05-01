@@ -13,7 +13,7 @@ import { connectorsList } from "../../constants/connectors/list";
 import { useModalStore } from "src/state/stores/modalState";
 
 interface IUseWalletConnection extends IConnectionInfo {
-  hanldeConnection: () => void;
+  hanldeConnection: (connector?: IConnector) => void;
   diconnectWallet: () => void;
 }
 
@@ -29,8 +29,8 @@ const uiConnector = connectorsList.find(
 const defaultConnector = uiConnector ? uiConnector.connector : null;
 
 export default function useWalletConnection({
-  connector = defaultConnector,
-}: IUseWAlletConnectionParams): [IUseWalletConnection, IRequestState] {
+  connector,
+}: IUseWAlletConnectionParams = {}): [IUseWalletConnection, IRequestState] {
   const {
     setAccount,
     account,
@@ -53,29 +53,33 @@ export default function useWalletConnection({
     [setChain, setAccount, setBalance]
   );
 
-  const hanldeConnection = useCallback(async () => {
-    if (!connector) return;
+  const hanldeConnection = useCallback(
+    async (passedConnector = connector) => {
+      if (!passedConnector) return;
 
-    connector
-      .connect((connectionInfo) => {
-        storeConnectionType(connector.name);
+      passedConnector
+        .connect((connectionInfo) => {
+          storeConnectionType(passedConnector.name);
 
-        handleConnectionSuccess(connectionInfo);
-        connector.addListeners({
-          onAccountChanged: (newAccount) => {
-            setAccount(newAccount as string);
-          },
-          onBalanceChanged: (newBalance) => {
-            setBalance(newBalance);
-          },
-          onChainChanged: (newChain) => {
-            console.log("onChainChanged", newChain);
-            setChain(newChain);
-          },
-        });
-      })
-      .finally(closeModal);
-  }, [connector?.name]);
+          handleConnectionSuccess(connectionInfo);
+          passedConnector.addListeners({
+            onAccountChanged: (newAccount) => {
+              setAccount(newAccount as string);
+            },
+            onBalanceChanged: (newBalance) => {
+              setBalance(newBalance);
+            },
+            onChainChanged: (newChain) => {
+              console.log("onChainChanged", newChain);
+              setChain(newChain);
+            },
+          });
+        })
+        .catch((err) => {})
+        .finally(closeModal);
+    },
+    [connector?.name]
+  );
 
   const handleDisconect = () => {
     connector?.disconnect?.();

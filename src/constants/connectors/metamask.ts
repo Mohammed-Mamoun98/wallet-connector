@@ -17,7 +17,7 @@ import { getChainInfo, getViemChain } from "../networks";
 
 const ethereum = window.ethereum;
 
-const errorCodeMap: Record<
+export const errorCodeMap: Record<
   number,
   (chainId: number, client: WalletClient) => Promise<any>
 > = {
