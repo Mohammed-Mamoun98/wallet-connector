@@ -3,6 +3,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import Modal from "./components/Shared/Modal/Modal";
 import AppRouter from "./Router/Router";
 import "./App.scss";
+import "tippy.js/dist/tippy.css";
 
 function App() {
   return (
