@@ -4,6 +4,8 @@ import { ReactComponent as WebsiteIcon } from "src/assets/svgs/icon_website.svg"
 import { ReactComponent as EmailIcon } from "src/assets/svgs/icon_email.svg";
 import StackoverflowIcon from "src/assets/imgs/Stack_Overflow_icon.svg.png";
 import StackExchangeIcon from "src/assets/imgs/stack-exchange-icon.png";
+import Link from "./Link/Link";
+import CopyToClipboard from "src/components/Shared/CopyToClipboard/CopyToClipboard";
 
 export interface ILink {
   icon: JSX.Element;
@@ -11,6 +13,7 @@ export interface ILink {
   link?: string;
   classname?: string;
   onClick?: () => void;
+  render?: () => JSX.Element;
 }
 
 export const infoLinks: ILink[] = [
@@ -49,9 +52,14 @@ export const infoLinks: ILink[] = [
     link: "",
     classname:
       "bg-[#fff] md:flex-grow text-[#26272B] w-[100%] md:w-[fit-content] flex-1",
-    onClick: function () {
-      navigator.clipboard.writeText("modahmada2018@gmail.com");
-      alert("Email is copied to your clipboard :)");
+    render: function () {
+      return (
+        <>
+          <CopyToClipboard classname="w-full" textToCopy={this.name}>
+            <Link {...this} />
+          </CopyToClipboard>
+        </>
+      );
     },
   },
 ];
