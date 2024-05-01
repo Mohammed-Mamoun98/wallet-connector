@@ -12,9 +12,8 @@ export default function ConnectedContent() {
 
   return (
     <div className="flex content-center gap-2 text-white items-center">
-      <ChainSelector />
       <div className="flex h-full items-center px-2 border rounded-xl border-[#38383A]  gap-2">
-        <span>
+        <span className="whitespace-pre">
           {newDisplayFloats(+balance.value, 4)} {balance.symbol}
         </span>
         <div className="cursor-pointer">
@@ -26,6 +25,7 @@ export default function ConnectedContent() {
           className="opacity-40 cursor-pointer hover:opacity-30"
         />
       </div>
+      <ChainSelector />
     </div>
   );
 }
