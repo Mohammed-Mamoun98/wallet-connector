@@ -20,7 +20,7 @@ export const experiencesList: IExperience[] = [
       "Worked on Hord App, a high-performing Ethereum staking app with over $7 million worth of ETH staked, consistently ranking among the top 3 in APY compared t ocompetitors.",
       "Created highly reusable tools like useContractReader. A function that simplifies dealing with contracts interactions (reads and writes).",
       "Created atomic internal css framework (cover 70% of what tailwind css do",
-      "Contributed to company wallet connector mono-repo using lema, supporting multiple wallets and chains (metamask, walletConnect, ledger and more).",
+      "Contributed to company wallet connector mono-repo using lerna, supporting multiple wallets and chains (metamask, walletConnect, ledger and more).",
       "Adding support for multi chain (Ethereum, Binance, Arbitrum)",
       "Wrote a set of unit-tests using cypress covering most used components",
     ],
