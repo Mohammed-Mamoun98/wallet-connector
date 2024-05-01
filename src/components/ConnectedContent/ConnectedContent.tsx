@@ -1,4 +1,5 @@
 import React from "react";
+import { ReactComponent as DisconnectIcon } from "src/assets/svgs/disconnect.svg";
 import useWalletConnection from "../../hooks/useWalletConnection/useWalletConnection";
 import WalletAddress from "../WalletAddress/WalletAddress";
 import { newDisplayFloats } from "../../utils/format";
@@ -10,14 +11,21 @@ export default function ConnectedContent() {
   if (!account) return <></>;
 
   return (
-    <div className=" ml-auto flex content-center gap-2 text-white items-center">
-      <span>
-        {newDisplayFloats(+balance.value, 4)} {balance.symbol}
-      </span>
-      <div onClick={diconnectWallet}>
-        <WalletAddress address={account} />
-      </div>
+    <div className="flex content-center gap-2 text-white items-center">
       <ChainSelector />
+      <div className="flex h-full items-center px-2 border rounded-xl border-[#38383A]  gap-2">
+        <span>
+          {newDisplayFloats(+balance.value, 4)} {balance.symbol}
+        </span>
+        <div className="cursor-pointer">
+          <WalletAddress address={account} />
+        </div>
+        <DisconnectIcon
+          onClick={diconnectWallet}
+          width={20}
+          className="opacity-40 cursor-pointer hover:opacity-30"
+        />
+      </div>
     </div>
   );
 }

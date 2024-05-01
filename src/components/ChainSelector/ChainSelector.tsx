@@ -11,7 +11,7 @@ export default function ChainSelector() {
   if (!chain) return <></>;
   return (
     <Popper closeOnContentClick content={<NetworkDropdown />}>
-      <div className="chain-selector border-solid border-[0.5px] border-gray-500 rounded-lg p-1.5">
+      <div className="chain-selector border-solid border-[0.5px] border-[#38383A] rounded-xl p-1.5">
         <div className="selected-network cursor-pointer">
           <NetworkIcon iconUrl={chain?.iconUrl} />
         </div>

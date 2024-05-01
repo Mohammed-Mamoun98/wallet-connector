@@ -1,13 +1,11 @@
 import React from "react";
-import "./Landing.scss";
-import Links from "./Links/Links";
 import Summary from "./Summary/Summary";
 import LandingHeader from "./LandingHeader/LandingHeader";
-import Skills from "./Skills/Skills";
-import { generalSkill, web3Skills } from "./Skills/skillsLists";
 import Recomandations from "./Recomandations/Recomandations";
 import ProfileGallery from "./ProfileGallery/ProfileGallery";
 import Experiences from "./Experiences/Experiences";
+import SkillsWrapper from "./Skills/SkillsWrapper/SkillsWrapper";
+import "./Landing.scss";
 
 export default function Landing() {
   return (
@@ -15,8 +13,7 @@ export default function Landing() {
       <div className="lg:w-[620px] w-[90%] mx-auto flex-1 flex flex-col gap-10 pb-[100px]">
         <LandingHeader />
         <Summary />
-        <Skills {...generalSkill} />
-        <Skills {...web3Skills} />
+        <SkillsWrapper />
         <Experiences />
         <Recomandations />
         <ProfileGallery />

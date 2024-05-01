@@ -1,9 +1,8 @@
 import React from "react";
-import Header from "./Layout/Header/Header";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import "./App.scss";
 import Modal from "./components/Shared/Modal/Modal";
 import AppRouter from "./Router/Router";
+import "./App.scss";
 
 function App() {
   return (

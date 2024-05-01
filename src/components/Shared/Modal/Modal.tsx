@@ -3,9 +3,7 @@ import "./Modal.scss";
 import { useClickAway } from "src/hooks/useClickAway/useClickAway";
 import { useModalStore } from "src/state/stores/modalState";
 
-interface IModal {}
-
-export default function Modal({}: IModal) {
+export default function Modal() {
   const { isOpen, content, closeModal } = useModalStore();
 
   const clickAwayRef = useRef<HTMLDivElement | null>(null);
@@ -15,8 +13,10 @@ export default function Modal({}: IModal) {
 
   return (
     <div className="modal-wrapper ">
-      {/* <div className="backdrop" /> */}
-      <div className="modal-content  md:w-[300px] w-[90%]" ref={clickAwayRef}>
+      <div
+        className="modal-content  md:w-[300px] w-[90%] z-[100]"
+        ref={clickAwayRef}
+      >
         {content}
       </div>
     </div>
