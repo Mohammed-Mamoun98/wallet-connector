@@ -55,7 +55,7 @@ export const infoLinks: ILink[] = [
     render: function () {
       return (
         <>
-          <CopyToClipboard classname="w-full" textToCopy={this.name}>
+          <CopyToClipboard classname="w-full md:w-fit" textToCopy={this.name}>
             <Link {...this} />
           </CopyToClipboard>
         </>
