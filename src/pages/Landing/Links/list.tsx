@@ -2,6 +2,7 @@ import { ReactComponent as LinkedInIcon } from "src/assets/svgs/icon_linkedin_16
 import { ReactComponent as GithubIcon } from "src/assets/svgs/icon_github_16.svg";
 import { ReactComponent as WebsiteIcon } from "src/assets/svgs/icon_website.svg";
 import { ReactComponent as EmailIcon } from "src/assets/svgs/icon_email.svg";
+import { ReactComponent as NpmIcon } from "src/assets/svgs/npm-icon.svg";
 import StackoverflowIcon from "src/assets/imgs/Stack_Overflow_icon.svg.png";
 import StackExchangeIcon from "src/assets/imgs/stack-exchange-icon.png";
 import Link from "./Link/Link";
@@ -31,6 +32,11 @@ export const infoLinks: ILink[] = [
     name: "CV",
     icon: <WebsiteIcon />,
     link: "https://online.fliphtml5.com/rdhno/taia/",
+  },
+  {
+    name: "NPM",
+    icon: <NpmIcon width={20} height={20} />,
+    link: "https://www.npmjs.com/package/@mo-toolkit/hooks?activeTab=readme",
   },
   {
     name: "481",

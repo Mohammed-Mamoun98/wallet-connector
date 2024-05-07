@@ -12,10 +12,10 @@ export const generalSkill: ISkillList = {
   icon: <CodeSkillsIcon />,
   skills: [
     "React",
-    "React Native",
-    "Next.js",
     "Express.js",
+    "React Native",
     "Mongo DB",
+    "Next.js",
     "Typescript",
     "Javascript",
     "Redux",
