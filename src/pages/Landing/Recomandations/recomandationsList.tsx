@@ -43,7 +43,7 @@ export const recomandationsList: IRecomandation[] = [
     giver: {
       name: "Liam Sutton",
       linkedinImg:
-        "https://media.licdn.com/dms/image/D4E35AQGhuQn_Vzj4nQ/profile-framedphoto-shrink_100_100/0/1676547464039?e=1714690800&v=beta&t=pY_kZt3GvsPc1cxl_AI0_W2IH49_DVCvSXxXh8Ogps8",
+        "https://media.licdn.com/dms/image/D4E35AQGhuQn_Vzj4nQ/profile-framedphoto-shrink_400_400/0/1676547464039?e=1716073200&v=beta&t=6x4jEENmStyNCCFrukrMWv8-N70DN8_KbAnDaOwBP34",
       role: "Full Stack Engineer at Chain Detective",
       linkedinLink: "https://www.linkedin.com/in/liam-sutton90/",
     },

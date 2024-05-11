@@ -9,7 +9,7 @@ export default function Recomandations() {
   return (
     <div>
       <span className={clsx("text-sm block mb-2", secondaryFontColor)}>
-        Recomandations
+        Recommendations
       </span>
       <div className="flex flex-col gap-[32px]">
         {recomandationsList.map((recomandation) => (
