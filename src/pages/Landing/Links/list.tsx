@@ -31,15 +31,15 @@ export const infoLinks: ILink[] = [
   {
     name: "CV",
     icon: <WebsiteIcon />,
-    link: "https://online.fliphtml5.com/rdhno/taia/",
+    link: "https://online.fliphtml5.com/rdhno/ggnl/",
   },
   {
     name: "NPM",
     icon: <NpmIcon width={20} height={20} />,
-    link: "https://www.npmjs.com/package/@mo-toolkit/hooks?activeTab=readme",
+    link: "https://www.npmjs.com/settings/mo-toolkit/packages",
   },
   {
-    name: "481",
+    name: "491",
     icon: (
       <img src={StackoverflowIcon} className="min-w-[24px] w-[24px] h-auto" />
     ),
