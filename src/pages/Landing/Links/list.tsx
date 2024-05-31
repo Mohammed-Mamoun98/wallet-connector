@@ -31,7 +31,7 @@ export const infoLinks: ILink[] = [
   {
     name: "CV",
     icon: <WebsiteIcon />,
-    link: "https://online.fliphtml5.com/rdhno/ggnl/",
+    link: "https://amethyst-camilla-97.tiiny.site/",
   },
   {
     name: "NPM",

@@ -26,6 +26,20 @@ export const experiencesList: IExperience[] = [
     ],
   },
   {
+    company: "Bria.AI",
+    position: "Senior Frontend Engineer",
+    date: {
+      from: 2021,
+      to: 2021,
+    },
+    bullets: [
+      "Implemented functionalities for removing and changing backgrounds in images, enhancing user experience and improving the app’s visual editing capabilities.",
+      "Integrated Object Manipulation Tools, Designed and integrated tools for changing objects within images, allowing users to modify and customize their photos with ease.",
+      "Enhanced Image Processing Workflows, Applied various filters and image processing techniques to deliver high-quality, professional-grade photo enhancements.",
+      "Optimized Frontend Performance: Improved the responsiveness and efficiency of the image processing features, ensuring smooth and fast user interactions across different devices and platforms",
+    ],
+  },
+  {
     company: "Taaspoint",
     position: "Frontend Engineer",
     date: {
