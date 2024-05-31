@@ -29,8 +29,8 @@ export const experiencesList: IExperience[] = [
     company: "Bria.AI",
     position: "Senior Frontend Engineer",
     date: {
-      from: 2021,
-      to: 2021,
+      from: 2022,
+      to: 2022,
     },
     bullets: [
       "Implemented functionalities for removing and changing backgrounds in images, enhancing user experience and improving the app’s visual editing capabilities.",
