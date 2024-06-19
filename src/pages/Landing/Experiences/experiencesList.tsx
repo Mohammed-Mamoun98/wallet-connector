@@ -14,7 +14,7 @@ export const experiencesList: IExperience[] = [
     position: "Senior Frontend Engineer",
     date: {
       from: 2021,
-      to: "Present",
+      to: "2024",
     },
     bullets: [
       "Worked on Hord App, a high-performing Ethereum staking app with over $7 million worth of ETH staked, consistently ranking among the top 3 in APY compared t ocompetitors.",

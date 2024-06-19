@@ -23,7 +23,7 @@ export const recomandationsList: IRecomandation[] = [
     giver: {
       name: "Meir Rosenschein",
       linkedinImg:
-        "https://media.licdn.com/dms/image/C4D03AQEe8rWd3nnh3Q/profile-displayphoto-shrink_100_100/0/1653299631464?e=1718236800&v=beta&t=ckiUgXvaTCIm6CzsgiO5V--oKDWJSkK43sItXUQgm_0",
+        "https://media.licdn.com/dms/image/C4D03AQEe8rWd3nnh3Q/profile-displayphoto-shrink_100_100/0/1653299631464?e=1724284800&v=beta&t=xagGmDQ7t32AOBBoNNOvEqice3BcVtKJeh7Y7eWK5v4",
       role: "Director of Product at Hord",
       linkedinLink: "https://www.linkedin.com/in/meir-rosenschein/",
     },
@@ -33,7 +33,7 @@ export const recomandationsList: IRecomandation[] = [
     giver: {
       name: "Miljan Rakita",
       linkedinImg:
-        "https://media.licdn.com/dms/image/D4D03AQGlE_5jOP0a-w/profile-displayphoto-shrink_100_100/0/1708428640291?e=1718236800&v=beta&t=9b6jFtGyx7frWsc9rgblPp0NjhOOEvZghpemjmLucj0",
+        "https://media.licdn.com/dms/image/D4D03AQGlE_5jOP0a-w/profile-displayphoto-shrink_100_100/0/1708428640291?e=1724284800&v=beta&t=MaaYrgMNNP7EGVeH-q_j1b8Qbrw6bb7AWA2u1RAWTRo",
       role: "Backend Team Lead at NIMA",
       linkedinLink: "https://www.linkedin.com/in/miljan-rakita-9b782213b/",
     },
@@ -43,7 +43,7 @@ export const recomandationsList: IRecomandation[] = [
     giver: {
       name: "Liam Sutton",
       linkedinImg:
-        "https://media.licdn.com/dms/image/D4E35AQGhuQn_Vzj4nQ/profile-framedphoto-shrink_400_400/0/1676547464039?e=1716073200&v=beta&t=6x4jEENmStyNCCFrukrMWv8-N70DN8_KbAnDaOwBP34",
+        "https://media.licdn.com/dms/image/C5603AQGc40gz5Ohd9w/profile-displayphoto-shrink_100_100/0/1565702516235?e=1724284800&v=beta&t=ySNnl1nMO1_iffxb0GyMSKplanmWbz7eApEB9dk1TtY",
       role: "Full Stack Engineer at Chain Detective",
       linkedinLink: "https://www.linkedin.com/in/liam-sutton90/",
     },
