@@ -10,57 +10,81 @@ export interface IExperience {
 
 export const experiencesList: IExperience[] = [
   {
-    company: "Dcentralab",
-    position: "Senior Frontend Engineer",
+    company: 'TaskBunny',
+    position: 'Senior Frontend Engineer',
     date: {
-      from: 2021,
-      to: "2024",
+      from: 2024,
+      to: 'Present',
     },
     bullets: [
-      "Worked on Hord App, a high-performing Ethereum staking app with over $7 million worth of ETH staked, consistently ranking among the top 3 in APY compared t ocompetitors.",
-      "Created highly reusable tools like useContractReader. A function that simplifies dealing with contracts interactions (reads and writes).",
-      "Created atomic internal css framework (cover 70% of what tailwind css do",
-      "Contributed to company wallet connector mono-repo using lerna, supporting multiple wallets and chains (metamask, walletConnect, ledger and more).",
-      "Adding support for multi chain (Ethereum, Binance, Arbitrum)",
-      "Wrote a set of unit-tests using cypress covering most used components",
+      'TaskBunny is a BNB chain application where promoters can create marketing campaigns and pay in stable-coin.',
+      "Enabled influencers to participate in promotions and get paid in the app's native coin through seamless service integration",
     ],
   },
   {
-    company: "Bria.AI",
-    position: "Senior Frontend Engineer",
+    company: 'Rizztech',
+    position: 'Senior Frontend Engineer',
+    date: {
+      from: 2024,
+      to: 'Present',
+    },
+    bullets: [
+      'Rizztech is a Solana-based application where users can create chat rooms and buy keys to view messages.',
+      'Designed and implemented intuitive user interfaces for chat functionalities and key management, ensuring seamless service integration.',
+    ],
+  },
+  {
+    company: 'Dcentralab',
+    position: 'Senior Frontend Engineer',
+    date: {
+      from: 2021,
+      to: '2024',
+    },
+    bullets: [
+      'Worked on Hord App, a high-performing Ethereum staking app with over $7 million worth of ETH staked, consistently ranking among the top 3 in APY compared t ocompetitors.',
+      'Created highly reusable tools like useContractReader. A function that simplifies dealing with contracts interactions (reads and writes).',
+      'Created atomic internal css framework (cover 70% of what tailwind css do',
+      'Contributed to company wallet connector mono-repo using lerna, supporting multiple wallets and chains (metamask, walletConnect, ledger and more).',
+      'Adding support for multi chain (Ethereum, Binance, Arbitrum)',
+      'Wrote a set of unit-tests using cypress covering most used components',
+    ],
+  },
+  {
+    company: 'Bria.AI',
+    position: 'Senior Frontend Engineer',
     date: {
       from: 2022,
       to: 2022,
     },
     bullets: [
-      "Implemented functionalities for removing and changing backgrounds in images, enhancing user experience and improving the app’s visual editing capabilities.",
-      "Integrated Object Manipulation Tools, Designed and integrated tools for changing objects within images, allowing users to modify and customize their photos with ease.",
-      "Enhanced Image Processing Workflows, Applied various filters and image processing techniques to deliver high-quality, professional-grade photo enhancements.",
-      "Optimized Frontend Performance: Improved the responsiveness and efficiency of the image processing features, ensuring smooth and fast user interactions across different devices and platforms",
+      'Implemented functionalities for removing and changing backgrounds in images, enhancing user experience and improving the app’s visual editing capabilities.',
+      'Integrated Object Manipulation Tools, Designed and integrated tools for changing objects within images, allowing users to modify and customize their photos with ease.',
+      'Enhanced Image Processing Workflows, Applied various filters and image processing techniques to deliver high-quality, professional-grade photo enhancements.',
+      'Optimized Frontend Performance: Improved the responsiveness and efficiency of the image processing features, ensuring smooth and fast user interactions across different devices and platforms',
     ],
   },
   {
-    company: "Taaspoint",
-    position: "Frontend Engineer",
+    company: 'Taaspoint',
+    position: 'Frontend Engineer',
     date: {
       from: 2020,
       to: 2021,
     },
     bullets: [
-      "Developed a CMT Dashboard (Campaign management tool) using (react, typescript, chart.js)",
-      "Developed a tableau report gallery, a filter UI controller",
+      'Developed a CMT Dashboard (Campaign management tool) using (react, typescript, chart.js)',
+      'Developed a tableau report gallery, a filter UI controller',
     ],
   },
   {
-    company: "Hemma Portal",
-    position: "Frontend Engineer",
+    company: 'Hemma Portal',
+    position: 'Frontend Engineer',
     date: {
       from: 2020,
       to: 2021,
     },
     bullets: [
-      "Build and deliver an entire E-commerce (check at gheeed.com) from scratch that had sales reached +1M SAR in less than 7 months.",
-      "Worked on couple enhancing performance techniques like progressive images and code splitting.",
+      'Build and deliver an entire E-commerce (check at gheeed.com) from scratch that had sales reached +1M SAR in less than 7 months.',
+      'Worked on couple enhancing performance techniques like progressive images and code splitting.',
     ],
   },
 ];
