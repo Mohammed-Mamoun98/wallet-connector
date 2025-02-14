@@ -31,11 +31,11 @@ export const infoLinks: ILink[] = [
   {
     name: "CV",
     icon: <WebsiteIcon />,
-    link: "https://indigo-violette-37.tiiny.site",
+    link: "https://pink-loralie-74.tiiny.site",
   },
   {
     name: "Upwork",
-    icon: <img  width={20} height={20} src="https://www.svgrepo.com/show/349549/upwork.svg"  alt="upwork" />,
+    icon: <img width={20} height={20} src="https://www.svgrepo.com/show/349549/upwork.svg" alt="upwork" />,
     link: "https://www.upwork.com/freelancers/~01f09035063e028b50",
   },
   {
