@@ -25,7 +25,6 @@ export default function ConnectedContent() {
           className="opacity-40 cursor-pointer hover:opacity-30"
         />
       </div>
-      <ChainSelector />
     </div>
   );
 }
