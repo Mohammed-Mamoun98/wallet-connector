@@ -9,13 +9,6 @@ export default function Recomandation({ giver, text }: IRecomandation) {
     <div className="flex flex-col gap-3">
       <span className="font-normal text-md">"{text}"</span>
       <div className="flex gap-3 items-center">
-        <img
-          width={32}
-          height={32}
-          className="rounded-[50%]"
-          src={giver.linkedinImg}
-          alt={giver.name}
-        />
         <div className="flex flex-col">
           <div className="flex gap-2 items-center">
             <span>{giver.name}</span>

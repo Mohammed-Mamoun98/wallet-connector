@@ -11,7 +11,7 @@ export default function Summary() {
         {" "}
         In 2021 I found my focus in web3. Most notably, I served as a Senior
         frontend engineer for Hord, an Ethereum Staking platform, managing
-        assets exceeding $7M in Total Value Locked.
+        assets exceeding $8.4M in TVL.
       </span>
     </div>
   );

@@ -27,10 +27,10 @@ export default function Experience({
         <div className="flex justify-between items-center">
           <div className="show-at-hovers absolute left-[-3%] top-0 w-[105%] h-[100%] z-[0] rounded-[16px]" />
           <div className="flex items-center gap-3 text-lg z-1">
-            <span className="block md:text-base sm:text-sm text-xs z-[1]">
+            <span className="block md:text-base text-[10px] z-[1]">
               {company}
             </span>
-            <span className={clsx("text-xs md:text-sm", secondaryFontColor)}>
+            <span className={clsx("text-[10px] md:text-sm", secondaryFontColor)}>
               {position}
             </span>
           </div>
@@ -38,7 +38,7 @@ export default function Experience({
             <div
               className={clsx("sm:text-base text-[10px] pr-2", secondaryFontColor)}
             >
-              {from} - {to}
+              {`${from.month} ${from.year}`} - {typeof to === "string" ? to : `${to.month} ${to.year}`}
             </div>
             <ArrowDown
               className={clsx("z-10 show-at-hover", {

@@ -44,7 +44,7 @@ export const infoLinks: ILink[] = [
     link: "https://www.npmjs.com/settings/mo-toolkit/packages",
   },
   {
-    name: "491",
+    name: "501",
     icon: (
       <img src={StackoverflowIcon} className="min-w-[24px] w-[24px] h-auto" alt="stackoverflow" />
     ),
@@ -55,7 +55,7 @@ export const infoLinks: ILink[] = [
     icon: (
       <img src={StackExchangeIcon} className="min-w-[24px] w-[24px] h-auto" alt="ethereum" />
     ),
-    link: "https://ethereum.stackexchange.com/users/93101/mohammed-alshaer",
+    link: "https://ethereum.stackexchange.com/users/93101/mohammed-alshaer?tab=profile",
   },
   {
     name: "modahmada2018@gmail.com",

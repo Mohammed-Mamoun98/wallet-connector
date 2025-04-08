@@ -26,8 +26,6 @@ const uiConnector = connectorsList.find(
   (con) => con.connector.name === storedConnectioType
 );
 
-const defaultConnector = uiConnector ? uiConnector.connector : null;
-
 export default function useWalletConnection({
   connector,
 }: IUseWAlletConnectionParams = {}): [IUseWalletConnection, IRequestState] {

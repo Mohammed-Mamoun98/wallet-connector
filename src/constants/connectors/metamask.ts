@@ -102,6 +102,8 @@ export const metamaskConnector: IConnector<SDKProvider> = {
     } catch (error: any) {
       const code = error.code;
       const errorHandler = errorCodeMap?.[code];
+
+      // handle error then proceed to switch the chain (currently it's unsupported network)
       return errorHandler?.(chainId, client).then(() =>
         this?.switchChain?.(chainId)
       );
